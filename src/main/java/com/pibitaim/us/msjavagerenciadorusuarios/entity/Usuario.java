@@ -8,7 +8,9 @@ import com.sun.istack.NotNull;
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity(name = "TBUS001_CAD_UNI_USU")
 public class Usuario {
@@ -57,6 +59,47 @@ public class Usuario {
     @NotBlank
     @Column(columnDefinition = "VARCHAR(255)", name = "SEN_ACE_USU")
     private String senhaAcessoUsuario;
+
+    @OneToMany
+    private List<EnderecosUsuario> enderecosUsuario = new ArrayList<>();
+
+    public Usuario(@Digits(integer = 14, fraction = 0) Integer cpfCnpj, String nomeUsuario, EnumTipoPessoa enumTipoPessoa, EnumSexoUsuario enumSexoUsuario, Date dataNascimento, EnumEstadoCivil enumEstadoCivil, Boolean indicadorMembresia, Date dataBatismo, Date dataUltimaAtualizacao, @NotBlank String senhaAcessoUsuario, List<EnderecosUsuario> enderecosUsuario) {
+        this.cpfCnpj = cpfCnpj;
+        this.nomeUsuario = nomeUsuario;
+        this.enumTipoPessoa = enumTipoPessoa;
+        this.enumSexoUsuario = enumSexoUsuario;
+        this.dataNascimento = dataNascimento;
+        this.enumEstadoCivil = enumEstadoCivil;
+        this.indicadorMembresia = indicadorMembresia;
+        this.dataBatismo = dataBatismo;
+        this.dataUltimaAtualizacao = dataUltimaAtualizacao;
+        this.senhaAcessoUsuario = senhaAcessoUsuario;
+        this.enderecosUsuario = enderecosUsuario;
+    }
+
+    public Integer getCpfCnpj() {
+        return cpfCnpj;
+    }
+
+    public void setCpfCnpj(Integer cpfCnpj) {
+        this.cpfCnpj = cpfCnpj;
+    }
+
+    public String getNomeUsuario() {
+        return nomeUsuario;
+    }
+
+    public void setNomeUsuario(String nomeUsuario) {
+        this.nomeUsuario = nomeUsuario;
+    }
+
+    public EnumTipoPessoa getEnumTipoPessoa() {
+        return enumTipoPessoa;
+    }
+
+    public void setEnumTipoPessoa(EnumTipoPessoa enumTipoPessoa) {
+        this.enumTipoPessoa = enumTipoPessoa;
+    }
 
     public EnumSexoUsuario getEnumSexoUsuario() {
         return enumSexoUsuario;
@@ -114,34 +157,12 @@ public class Usuario {
         this.senhaAcessoUsuario = senhaAcessoUsuario;
     }
 
-    public Usuario(@Digits(integer = 14, fraction = 0) Integer cpfCnpj, String nomeUsuario, EnumTipoPessoa enumTipoPessoa) {
-        this.cpfCnpj = cpfCnpj;
-        this.nomeUsuario = nomeUsuario;
-        this.enumTipoPessoa = enumTipoPessoa;
+    public List<EnderecosUsuario> getEnderecosUsuario() {
+        return enderecosUsuario;
     }
 
-    public Integer getCpfCnpj() {
-        return cpfCnpj;
-    }
-
-    public void setCpfCnpj(Integer cpfCnpj) {
-        this.cpfCnpj = cpfCnpj;
-    }
-
-    public String getNomeUsuario() {
-        return nomeUsuario;
-    }
-
-    public void setNomeUsuario(String nomeUsuario) {
-        this.nomeUsuario = nomeUsuario;
-    }
-
-    public EnumTipoPessoa getEnumTipoPessoa() {
-        return enumTipoPessoa;
-    }
-
-    public void setEnumTipoPessoa(EnumTipoPessoa enumTipoPessoa) {
-        this.enumTipoPessoa = enumTipoPessoa;
+    public void setEnderecosUsuario(List<EnderecosUsuario> enderecosUsuario) {
+        this.enderecosUsuario = enderecosUsuario;
     }
 
     @Override
@@ -157,6 +178,7 @@ public class Usuario {
                 ", dataBatismo=" + dataBatismo +
                 ", dataUltimaAtualizacao=" + dataUltimaAtualizacao +
                 ", senhaAcessoUsuario='" + senhaAcessoUsuario + '\'' +
+                ", enderecosUsuario=" + enderecosUsuario +
                 '}';
     }
 }
