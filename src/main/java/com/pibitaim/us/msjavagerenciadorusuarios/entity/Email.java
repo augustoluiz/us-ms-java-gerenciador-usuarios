@@ -17,6 +17,7 @@ public class Email {
     private String emailUsuario;
 
     @ManyToOne
+    @JoinColumn(name = "CPF_CNPJ")
     private Usuario usuario;
 
     @NotNull
