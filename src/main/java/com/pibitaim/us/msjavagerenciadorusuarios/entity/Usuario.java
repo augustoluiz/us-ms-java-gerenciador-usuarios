@@ -63,7 +63,10 @@ public class Usuario {
     @OneToMany
     private List<EnderecosUsuario> enderecosUsuario = new ArrayList<>();
 
-    public Usuario(@Digits(integer = 14, fraction = 0) Integer cpfCnpj, String nomeUsuario, EnumTipoPessoa enumTipoPessoa, EnumSexoUsuario enumSexoUsuario, Date dataNascimento, EnumEstadoCivil enumEstadoCivil, Boolean indicadorMembresia, Date dataBatismo, Date dataUltimaAtualizacao, @NotBlank String senhaAcessoUsuario, List<EnderecosUsuario> enderecosUsuario) {
+    @OneToMany
+    private List<TelefonesUsuario> telefonesUsuarios = new ArrayList<>();
+
+    public Usuario(@Digits(integer = 14, fraction = 0) Integer cpfCnpj, String nomeUsuario, EnumTipoPessoa enumTipoPessoa, EnumSexoUsuario enumSexoUsuario, Date dataNascimento, EnumEstadoCivil enumEstadoCivil, Boolean indicadorMembresia, Date dataBatismo, Date dataUltimaAtualizacao, @NotBlank String senhaAcessoUsuario, List<EnderecosUsuario> enderecosUsuario, List<TelefonesUsuario> telefonesUsuarios) {
         this.cpfCnpj = cpfCnpj;
         this.nomeUsuario = nomeUsuario;
         this.enumTipoPessoa = enumTipoPessoa;
@@ -75,6 +78,7 @@ public class Usuario {
         this.dataUltimaAtualizacao = dataUltimaAtualizacao;
         this.senhaAcessoUsuario = senhaAcessoUsuario;
         this.enderecosUsuario = enderecosUsuario;
+        this.telefonesUsuarios = telefonesUsuarios;
     }
 
     public Integer getCpfCnpj() {
@@ -165,6 +169,14 @@ public class Usuario {
         this.enderecosUsuario = enderecosUsuario;
     }
 
+    public List<TelefonesUsuario> getTelefonesUsuarios() {
+        return telefonesUsuarios;
+    }
+
+    public void setTelefonesUsuarios(List<TelefonesUsuario> telefonesUsuarios) {
+        this.telefonesUsuarios = telefonesUsuarios;
+    }
+
     @Override
     public String toString() {
         return "Usuario{" +
@@ -178,7 +190,8 @@ public class Usuario {
                 ", dataBatismo=" + dataBatismo +
                 ", dataUltimaAtualizacao=" + dataUltimaAtualizacao +
                 ", senhaAcessoUsuario='" + senhaAcessoUsuario + '\'' +
-                ", enderecosUsuario=" + enderecosUsuario +
+                ", enderecosUsuario=" + enderecosUsuario.toString() +
+                ", telefonesUsuarios=" + telefonesUsuarios.toString() +
                 '}';
     }
 }

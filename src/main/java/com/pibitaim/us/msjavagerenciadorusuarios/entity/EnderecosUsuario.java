@@ -2,6 +2,7 @@ package com.pibitaim.us.msjavagerenciadorusuarios.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Entity(name = "TBUS005_END_USU")
 public class EnderecosUsuario {
@@ -9,6 +10,7 @@ public class EnderecosUsuario {
     @EmbeddedId
     private EnderecosUsuarioId enderecosUsuarioId;
 
+    @NotNull
     @Min(0)
     @Column(name = "NIV_PRIO")
     private Integer nivelPrioridade;

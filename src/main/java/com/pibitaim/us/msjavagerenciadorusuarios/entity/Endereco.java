@@ -168,7 +168,7 @@ public class Endereco {
                 ", logradouroEndereco='" + logradouroEndereco + '\'' +
                 ", complementoEndereco='" + complementoEndereco + '\'' +
                 ", tipoEndereco=" + tipoEndereco +
-                ", enderecosUsuario=" + enderecosUsuario +
+                ", enderecosUsuario=" + enderecosUsuario.toString() +
                 '}';
     }
 }

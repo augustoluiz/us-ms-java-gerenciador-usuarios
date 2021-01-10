@@ -7,7 +7,9 @@ import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity(name = "TBUS003_CAD_TEL_USU")
 public class Telefone {
@@ -32,12 +34,16 @@ public class Telefone {
     @Column(name = "TIP_TEL", columnDefinition = "CHAR(01)")
     private EnumTipoTelefone tipoTelefone;
 
-    public Telefone(Long codigoCadastroTelefone, Date dataUltimaAtualizacao, @Min(0) Integer telefoneDDD, @Min(0) Integer telefoneNumero, EnumTipoTelefone tipoTelefone) {
+    @OneToMany
+    private List<TelefonesUsuario> telefonesUsuarios = new ArrayList<>();
+
+    public Telefone(Long codigoCadastroTelefone, Date dataUltimaAtualizacao, @Min(0) Integer telefoneDDD, @Min(0) Integer telefoneNumero, EnumTipoTelefone tipoTelefone, List<TelefonesUsuario> telefonesUsuarios) {
         this.codigoCadastroTelefone = codigoCadastroTelefone;
         this.dataUltimaAtualizacao = dataUltimaAtualizacao;
         this.telefoneDDD = telefoneDDD;
         this.telefoneNumero = telefoneNumero;
         this.tipoTelefone = tipoTelefone;
+        this.telefonesUsuarios = telefonesUsuarios;
     }
 
     public Long getCodigoCadastroTelefone() {
@@ -80,6 +86,14 @@ public class Telefone {
         this.tipoTelefone = tipoTelefone;
     }
 
+    public List<TelefonesUsuario> getTelefonesUsuarios() {
+        return telefonesUsuarios;
+    }
+
+    public void setTelefonesUsuarios(List<TelefonesUsuario> telefonesUsuarios) {
+        this.telefonesUsuarios = telefonesUsuarios;
+    }
+
     @Override
     public String toString() {
         return "Telefone{" +
@@ -88,6 +102,7 @@ public class Telefone {
                 ", telefoneDDD=" + telefoneDDD +
                 ", telefoneNumero=" + telefoneNumero +
                 ", tipoTelefone=" + tipoTelefone +
+                ", telefonesUsuarios=" + telefonesUsuarios.toString() +
                 '}';
     }
 }
