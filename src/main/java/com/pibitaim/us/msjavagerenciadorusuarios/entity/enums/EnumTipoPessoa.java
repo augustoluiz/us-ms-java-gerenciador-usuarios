@@ -2,7 +2,7 @@ package com.pibitaim.us.msjavagerenciadorusuarios.entity.enums;
 
 public enum EnumTipoPessoa {
 
-    PF("F"), PJ("J");
+    F("PF"), J("PJ");
 
     private final String tipoPessoa;
 

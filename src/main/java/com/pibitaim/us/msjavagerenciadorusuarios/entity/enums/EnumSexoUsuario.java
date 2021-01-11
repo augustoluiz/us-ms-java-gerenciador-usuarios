@@ -2,7 +2,7 @@ package com.pibitaim.us.msjavagerenciadorusuarios.entity.enums;
 
 public enum EnumSexoUsuario {
 
-    MASCULINO("M"), FEMININO("F");
+    M("MASCULINO"), F("FEMININO");
 
     private String sexoUsuario;
 

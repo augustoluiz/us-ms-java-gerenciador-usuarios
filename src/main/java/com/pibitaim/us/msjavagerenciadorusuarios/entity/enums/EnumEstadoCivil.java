@@ -2,7 +2,7 @@ package com.pibitaim.us.msjavagerenciadorusuarios.entity.enums;
 
 public enum EnumEstadoCivil {
 
-    SOLTEIRO("S"), CASADO("C"), DIVORCIADO("D"), VIUVO("V");
+    S("SOLTEIRO"),C("CASADO"), D("DIVORCIADO"), V("VIUVO");
 
     private String estadoCivil;
 
@@ -11,6 +11,6 @@ public enum EnumEstadoCivil {
     }
 
     public String getEstadoCivil() {
-        return estadoCivil;
+        return this.estadoCivil;
     }
 }

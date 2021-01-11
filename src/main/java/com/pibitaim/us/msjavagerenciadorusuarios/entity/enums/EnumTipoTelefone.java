@@ -2,7 +2,7 @@ package com.pibitaim.us.msjavagerenciadorusuarios.entity.enums;
 
 public enum EnumTipoTelefone {
 
-    TELEFONE_FIXO("F"), TELEFONE_CELULAR("C");
+    F("TELEFONE_FIXO"), C("TELEFONE_CELULAR");
 
     private String tipoTelefone;
 

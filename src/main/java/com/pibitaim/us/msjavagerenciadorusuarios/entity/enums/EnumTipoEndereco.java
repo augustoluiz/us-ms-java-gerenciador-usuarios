@@ -2,7 +2,7 @@ package com.pibitaim.us.msjavagerenciadorusuarios.entity.enums;
 
 public enum EnumTipoEndereco {
 
-    CASA("C"), APARTAMENTO("A");
+    C("CASA"), A("APARTAMENTO");
 
     private String tipoEndereco;
 

@@ -6,7 +6,6 @@ import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumTipoPessoa;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,12 +16,11 @@ public class Usuario {
 
     @Id
     @NotNull
-    @Digits(integer = 14, fraction = 0)
-    @Column(name = "CPF_CNPJ")
-    private Integer cpfCnpj;
+    @Column(columnDefinition = "DECIMAL(14)", name = "CPF_CNPJ")
+    private Long cpfCnpj;
 
     @NotNull
-    @Column(columnDefinition = "VARCHAR(255)")
+    @Column(columnDefinition = "VARCHAR(255)", name = "NOM_USU")
     private String nomeUsuario;
 
     @NotNull
@@ -66,7 +64,11 @@ public class Usuario {
     @OneToMany
     private List<TelefonesUsuario> telefonesUsuarios = new ArrayList<>();
 
-    public Usuario(@Digits(integer = 14, fraction = 0) Integer cpfCnpj, String nomeUsuario, EnumTipoPessoa enumTipoPessoa, EnumSexoUsuario enumSexoUsuario, Date dataNascimento, EnumEstadoCivil enumEstadoCivil, Boolean indicadorMembresia, Date dataBatismo, Date dataUltimaAtualizacao, @NotBlank String senhaAcessoUsuario, List<EnderecosUsuario> enderecosUsuario, List<TelefonesUsuario> telefonesUsuarios) {
+    public Usuario(){
+
+    };
+
+    public Usuario(Long cpfCnpj, String nomeUsuario, EnumTipoPessoa enumTipoPessoa, EnumSexoUsuario enumSexoUsuario, Date dataNascimento, EnumEstadoCivil enumEstadoCivil, Boolean indicadorMembresia, Date dataBatismo, Date dataUltimaAtualizacao, @NotBlank String senhaAcessoUsuario, List<EnderecosUsuario> enderecosUsuario, List<TelefonesUsuario> telefonesUsuarios) {
         this.cpfCnpj = cpfCnpj;
         this.nomeUsuario = nomeUsuario;
         this.enumTipoPessoa = enumTipoPessoa;
@@ -81,11 +83,11 @@ public class Usuario {
         this.telefonesUsuarios = telefonesUsuarios;
     }
 
-    public Integer getCpfCnpj() {
+    public Long getCpfCnpj() {
         return cpfCnpj;
     }
 
-    public void setCpfCnpj(Integer cpfCnpj) {
+    public void setCpfCnpj(Long cpfCnpj) {
         this.cpfCnpj = cpfCnpj;
     }
 
