@@ -1,4 +1,4 @@
-package com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.impl;
+package com.pibitaim.us.msjavagerenciadorusuarios.service.impl;
 
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.Usuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.repository.UsuarioRepository;
