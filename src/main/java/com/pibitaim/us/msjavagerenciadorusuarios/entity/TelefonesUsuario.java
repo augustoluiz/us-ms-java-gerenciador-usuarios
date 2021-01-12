@@ -1,11 +1,14 @@
 package com.pibitaim.us.msjavagerenciadorusuarios.entity;
 
+import lombok.Data;
+
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+@Data
 @Entity(name = "TBUS006_TEL_USU")
 public class TelefonesUsuario {
 
@@ -19,36 +22,6 @@ public class TelefonesUsuario {
 
     @Column(name = "TEL_PRI")
     private Boolean telefonePrincipal;
-
-    public TelefonesUsuario(TelefonesUsuarioId telefonesUsuarioId, @NotNull @Min(0) Integer nivelPrioridade, Boolean telefonePrincipal) {
-        this.telefonesUsuarioId = telefonesUsuarioId;
-        this.nivelPrioridade = nivelPrioridade;
-        this.telefonePrincipal = telefonePrincipal;
-    }
-
-    public TelefonesUsuarioId getTelefonesUsuarioId() {
-        return telefonesUsuarioId;
-    }
-
-    public void setTelefonesUsuarioId(TelefonesUsuarioId telefonesUsuarioId) {
-        this.telefonesUsuarioId = telefonesUsuarioId;
-    }
-
-    public Integer getNivelPrioridade() {
-        return nivelPrioridade;
-    }
-
-    public void setNivelPrioridade(Integer nivelPrioridade) {
-        this.nivelPrioridade = nivelPrioridade;
-    }
-
-    public Boolean getTelefonePrincipal() {
-        return telefonePrincipal;
-    }
-
-    public void setTelefonePrincipal(Boolean telefonePrincipal) {
-        this.telefonePrincipal = telefonePrincipal;
-    }
 
     @Override
     public String toString() {

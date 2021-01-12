@@ -4,6 +4,7 @@ import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumEstadoCivil;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumSexoUsuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumTipoPessoa;
 import com.sun.istack.NotNull;
+import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -11,12 +12,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Data
 @Entity(name = "TBUS001_CAD_UNI_USU")
 public class Usuario {
 
     @Id
     @NotNull
-    @Column(columnDefinition = "DECIMAL(14)", name = "CPF_CNPJ")
+    @Column(columnDefinition = "BIGINT(14)", name = "CPF_CNPJ")
     private Long cpfCnpj;
 
     @NotNull
@@ -28,7 +30,6 @@ public class Usuario {
     @Column(columnDefinition = "CHAR(01)", name = "TIP_PES")
     private EnumTipoPessoa enumTipoPessoa;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "CHAR(01)", name = "SEX_USU")
     private EnumSexoUsuario enumSexoUsuario;
@@ -37,7 +38,6 @@ public class Usuario {
     @Column(columnDefinition = "DATE", name = "DAT_NSC")
     private Date dataNascimento;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "CHAR(01)", name = "EST_CIV")
     private EnumEstadoCivil enumEstadoCivil;
@@ -62,122 +62,7 @@ public class Usuario {
     private List<EnderecosUsuario> enderecosUsuario = new ArrayList<>();
 
     @OneToMany
-    private List<TelefonesUsuario> telefonesUsuarios = new ArrayList<>();
-
-    public Usuario(){
-
-    };
-
-    public Usuario(Long cpfCnpj, String nomeUsuario, EnumTipoPessoa enumTipoPessoa, EnumSexoUsuario enumSexoUsuario, Date dataNascimento, EnumEstadoCivil enumEstadoCivil, Boolean indicadorMembresia, Date dataBatismo, Date dataUltimaAtualizacao, @NotBlank String senhaAcessoUsuario, List<EnderecosUsuario> enderecosUsuario, List<TelefonesUsuario> telefonesUsuarios) {
-        this.cpfCnpj = cpfCnpj;
-        this.nomeUsuario = nomeUsuario;
-        this.enumTipoPessoa = enumTipoPessoa;
-        this.enumSexoUsuario = enumSexoUsuario;
-        this.dataNascimento = dataNascimento;
-        this.enumEstadoCivil = enumEstadoCivil;
-        this.indicadorMembresia = indicadorMembresia;
-        this.dataBatismo = dataBatismo;
-        this.dataUltimaAtualizacao = dataUltimaAtualizacao;
-        this.senhaAcessoUsuario = senhaAcessoUsuario;
-        this.enderecosUsuario = enderecosUsuario;
-        this.telefonesUsuarios = telefonesUsuarios;
-    }
-
-    public Long getCpfCnpj() {
-        return cpfCnpj;
-    }
-
-    public void setCpfCnpj(Long cpfCnpj) {
-        this.cpfCnpj = cpfCnpj;
-    }
-
-    public String getNomeUsuario() {
-        return nomeUsuario;
-    }
-
-    public void setNomeUsuario(String nomeUsuario) {
-        this.nomeUsuario = nomeUsuario;
-    }
-
-    public EnumTipoPessoa getEnumTipoPessoa() {
-        return enumTipoPessoa;
-    }
-
-    public void setEnumTipoPessoa(EnumTipoPessoa enumTipoPessoa) {
-        this.enumTipoPessoa = enumTipoPessoa;
-    }
-
-    public EnumSexoUsuario getEnumSexoUsuario() {
-        return enumSexoUsuario;
-    }
-
-    public void setEnumSexoUsuario(EnumSexoUsuario enumSexoUsuario) {
-        this.enumSexoUsuario = enumSexoUsuario;
-    }
-
-    public Date getDataNascimento() {
-        return dataNascimento;
-    }
-
-    public void setDataNascimento(Date dataNascimento) {
-        this.dataNascimento = dataNascimento;
-    }
-
-    public EnumEstadoCivil getEnumEstadoCivil() {
-        return enumEstadoCivil;
-    }
-
-    public void setEnumEstadoCivil(EnumEstadoCivil enumEstadoCivil) {
-        this.enumEstadoCivil = enumEstadoCivil;
-    }
-
-    public Boolean getIndicadorMembresia() {
-        return indicadorMembresia;
-    }
-
-    public void setIndicadorMembresia(Boolean indicadorMembresia) {
-        this.indicadorMembresia = indicadorMembresia;
-    }
-
-    public Date getDataBatismo() {
-        return dataBatismo;
-    }
-
-    public void setDataBatismo(Date dataBatismo) {
-        this.dataBatismo = dataBatismo;
-    }
-
-    public Date getDataUltimaAtualizacao() {
-        return dataUltimaAtualizacao;
-    }
-
-    public void setDataUltimaAtualizacao(Date dataUltimaAtualizacao) {
-        this.dataUltimaAtualizacao = dataUltimaAtualizacao;
-    }
-
-    public String getSenhaAcessoUsuario() {
-        return senhaAcessoUsuario;
-    }
-
-    public void setSenhaAcessoUsuario(String senhaAcessoUsuario) {
-        this.senhaAcessoUsuario = senhaAcessoUsuario;
-    }
-
-    public List<EnderecosUsuario> getEnderecosUsuario() {
-        return enderecosUsuario;
-    }
-
-    public void setEnderecosUsuario(List<EnderecosUsuario> enderecosUsuario) {
-        this.enderecosUsuario = enderecosUsuario;
-    }
-
-    public List<TelefonesUsuario> getTelefonesUsuarios() {
-        return telefonesUsuarios;
-    }
-
-    public void setTelefonesUsuarios(List<TelefonesUsuario> telefonesUsuarios) {
-        this.telefonesUsuarios = telefonesUsuarios;
-    }
+    private List<TelefonesUsuario> telefonesUsuario = new ArrayList<>();
 
     @Override
     public String toString() {
@@ -193,7 +78,7 @@ public class Usuario {
                 ", dataUltimaAtualizacao=" + dataUltimaAtualizacao +
                 ", senhaAcessoUsuario='" + senhaAcessoUsuario + '\'' +
                 ", enderecosUsuario=" + enderecosUsuario.toString() +
-                ", telefonesUsuarios=" + telefonesUsuarios.toString() +
+                ", telefonesUsuarios=" + telefonesUsuario.toString() +
                 '}';
     }
 }

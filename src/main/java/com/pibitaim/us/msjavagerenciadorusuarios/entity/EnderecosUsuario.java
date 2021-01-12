@@ -1,9 +1,12 @@
 package com.pibitaim.us.msjavagerenciadorusuarios.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+@Data
 @Entity(name = "TBUS005_END_USU")
 public class EnderecosUsuario {
 
@@ -17,36 +20,6 @@ public class EnderecosUsuario {
 
     @Column(name = "END_PRI")
     private Boolean enderecoPrincipal;
-
-    public EnderecosUsuario(EnderecosUsuarioId enderecosUsuarioId, @Min(0) Integer nivelPrioridade, Boolean enderecoPrincipal) {
-        this.enderecosUsuarioId = enderecosUsuarioId;
-        this.nivelPrioridade = nivelPrioridade;
-        this.enderecoPrincipal = enderecoPrincipal;
-    }
-
-    public EnderecosUsuarioId getEnderecosUsuarioId() {
-        return enderecosUsuarioId;
-    }
-
-    public void setEnderecosUsuarioId(EnderecosUsuarioId enderecosUsuarioId) {
-        this.enderecosUsuarioId = enderecosUsuarioId;
-    }
-
-    public Integer getNivelPrioridade() {
-        return nivelPrioridade;
-    }
-
-    public void setNivelPrioridade(Integer nivelPrioridade) {
-        this.nivelPrioridade = nivelPrioridade;
-    }
-
-    public Boolean getEnderecoPrincipal() {
-        return enderecoPrincipal;
-    }
-
-    public void setEnderecoPrincipal(Boolean enderecoPrincipal) {
-        this.enderecoPrincipal = enderecoPrincipal;
-    }
 
     @Override
     public String toString() {
