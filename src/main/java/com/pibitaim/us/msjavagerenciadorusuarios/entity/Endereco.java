@@ -63,7 +63,7 @@ public class Endereco {
     private EnumTipoEndereco tipoEndereco;
 
     @OneToMany
-    private List<EnderecosUsuario> enderecosUsuario = new ArrayList<>();
+    private List<EnderecosUsuario> enderecosUsuario;
 
     @Override
     public String toString() {

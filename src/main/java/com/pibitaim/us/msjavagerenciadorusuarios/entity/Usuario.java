@@ -5,6 +5,8 @@ import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumSexoUsuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumTipoPessoa;
 import com.sun.istack.NotNull;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -13,6 +15,8 @@ import java.util.Date;
 import java.util.List;
 
 @Data
+@Getter
+@Setter
 @Entity(name = "TBUS001_CAD_UNI_USU")
 public class Usuario {
 
@@ -59,10 +63,10 @@ public class Usuario {
     private String senhaAcessoUsuario;
 
     @OneToMany
-    private List<EnderecosUsuario> enderecosUsuario = new ArrayList<>();
+    private List<EnderecosUsuario> enderecosUsuario;
 
     @OneToMany
-    private List<TelefonesUsuario> telefonesUsuario = new ArrayList<>();
+    private List<TelefonesUsuario> telefonesUsuario;
 
     @Override
     public String toString() {
