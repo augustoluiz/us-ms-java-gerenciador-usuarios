@@ -10,7 +10,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -62,10 +61,18 @@ public class Usuario {
     @Column(columnDefinition = "VARCHAR(255)", name = "SEN_ACE_USU")
     private String senhaAcessoUsuario;
 
-    @OneToMany
+    @OneToMany(
+            mappedBy = "usuario",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private List<EnderecosUsuario> enderecosUsuario;
 
-    @OneToMany
+    @OneToMany(
+            mappedBy = "usuario",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private List<TelefonesUsuario> telefonesUsuario;
 
     @Override

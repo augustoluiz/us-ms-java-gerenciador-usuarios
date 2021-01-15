@@ -1,18 +1,15 @@
 package com.pibitaim.us.msjavagerenciadorusuarios.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
 @Embeddable
 public class TelefonesUsuarioId implements Serializable {
 
-    @ManyToOne
-    @JoinColumn(name = "CPF_CNPJ")
-    private Usuario usuario;
+    @Column(name = "CPF_CNPJ")
+    private Long usuarioId;
 
-    @ManyToOne
-    @JoinColumn(name = "COD_CAD_TEL")
-    private Telefone telefone;
+    @Column(name = "COD_CAD_TEL")
+    private Long telefoneId;
 }

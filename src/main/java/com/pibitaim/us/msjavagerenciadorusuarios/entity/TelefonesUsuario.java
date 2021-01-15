@@ -2,9 +2,7 @@ package com.pibitaim.us.msjavagerenciadorusuarios.entity;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -14,6 +12,16 @@ public class TelefonesUsuario {
 
     @EmbeddedId
     private TelefonesUsuarioId telefonesUsuarioId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CPF_CNPJ")
+    @MapsId("usuarioId")
+    private Usuario usuario;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "COD_CAD_TEL")
+    @MapsId("telefoneId")
+    private Telefone telefone;
 
     @NotNull
     @Min(0)

@@ -40,7 +40,7 @@ public class UsuarioMapper implements MapperDTO<Usuario, UsuarioDTO> {
 
         List<EnderecosUsuarioDTO> enderecosUsuarioDTO = new ArrayList<>();
 
-        enderecosUsuario.forEach(endereco -> {
+        /*enderecosUsuario.forEach(endereco -> {
             EnderecosUsuarioDTO endUsuDTO = new EnderecosUsuarioDTO();
 
             endUsuDTO.setCodigoCadastroEndereco(endereco.getEnderecosUsuarioId().getEndereco().getCodigoCadastroEndereco());
@@ -56,7 +56,8 @@ public class UsuarioMapper implements MapperDTO<Usuario, UsuarioDTO> {
             endUsuDTO.setTipoEndereco(endereco.getEnderecosUsuarioId().getEndereco().getTipoEndereco());
 
             enderecosUsuarioDTO.add(endUsuDTO);
-        });
+        });*/
+        
 
         return enderecosUsuarioDTO;
     }

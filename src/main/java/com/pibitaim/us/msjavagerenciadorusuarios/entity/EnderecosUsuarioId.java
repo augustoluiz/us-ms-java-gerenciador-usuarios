@@ -4,9 +4,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
 @Data
@@ -15,12 +14,10 @@ import java.io.Serializable;
 @Embeddable
 public class EnderecosUsuarioId implements Serializable {
 
-    @ManyToOne
-    @JoinColumn(name = "CPF_CNPJ")
-    private Usuario usuario;
+    @Column(name = "CPF_CNPJ")
+    private Long usuarioId;
 
-    @ManyToOne
-    @JoinColumn(name = "COD_CAD_END")
-    private Endereco endereco;
+    @Column(name = "COD_CAD_END")
+    private Long enderecoId;
 
 }

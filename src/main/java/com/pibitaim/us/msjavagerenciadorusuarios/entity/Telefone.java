@@ -34,7 +34,11 @@ public class Telefone {
     @Column(name = "TIP_TEL", columnDefinition = "CHAR(01)")
     private EnumTipoTelefone tipoTelefone;
 
-    @OneToMany
+    @OneToMany(
+            mappedBy = "telefone",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private List<TelefonesUsuario> telefonesUsuario = new ArrayList<>();
 
     @Override

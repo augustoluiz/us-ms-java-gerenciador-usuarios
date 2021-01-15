@@ -9,7 +9,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -62,7 +61,11 @@ public class Endereco {
     @Column(columnDefinition = "CHAR(01)", name = "TIP_END")
     private EnumTipoEndereco tipoEndereco;
 
-    @OneToMany
+    @OneToMany(
+            mappedBy = "endereco",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private List<EnderecosUsuario> enderecosUsuario;
 
     @Override
