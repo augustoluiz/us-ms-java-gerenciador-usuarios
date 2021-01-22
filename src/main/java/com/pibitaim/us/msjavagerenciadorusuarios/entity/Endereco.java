@@ -32,6 +32,7 @@ public class Endereco {
     private Integer cepEndereco;
 
     @NotNull
+    @NotBlank
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "CHAR(02)", name = "UF_END")
     private EnumUF uf;

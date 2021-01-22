@@ -5,13 +5,18 @@ import com.pibitaim.us.msjavagerenciadorusuarios.entity.TelefonesUsuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumEstadoCivil;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumSexoUsuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumTipoPessoa;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Data
+@Getter
+@Setter
 public class UsuarioDTO {
 
     private Long cpfCnpj;
@@ -23,7 +28,7 @@ public class UsuarioDTO {
     private Boolean indicadorMembresia;
     private Date dataBatismo;
     private Date dataUltimaAtualizacao;
-    private List<EnderecosUsuarioDTO> enderecosUsuario = new ArrayList<>();
-    // List<TelefonesUsuarioDTO> telefonesUsuario = new ArrayList<>();
+    private List<EnderecosUsuarioDTO> enderecosUsuario;
+    private List<TelefonesUsuarioDTO> telefonesUsuario;
 
 }

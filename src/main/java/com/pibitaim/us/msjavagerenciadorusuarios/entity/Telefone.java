@@ -31,6 +31,7 @@ public class Telefone {
     @Column(name = "TEL_NUM", length = 9)
     private Integer telefoneNumero;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "TIP_TEL", columnDefinition = "CHAR(01)")
     private EnumTipoTelefone tipoTelefone;
 
