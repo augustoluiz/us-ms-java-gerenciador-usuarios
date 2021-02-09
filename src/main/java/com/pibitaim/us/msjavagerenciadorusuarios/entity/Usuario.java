@@ -75,6 +75,13 @@ public class Usuario {
     )
     private List<TelefonesUsuario> telefonesUsuario;
 
+    @OneToMany(
+            mappedBy = "usuario",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Email> emailsUsuario;
+
     @Override
     public String toString() {
         return "Usuario{" +

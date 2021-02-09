@@ -7,7 +7,10 @@ import com.pibitaim.us.msjavagerenciadorusuarios.entity.Usuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.UsuarioService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,5 +34,14 @@ public class UsuarioController {
             log.info(usuario.toString());
             return usuarioMapper.converteParaDTO(usuario);
         }).collect(Collectors.toList());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioDTO> findById(@PathVariable Long id){
+        Usuario usuario = usuarioService.findById(id).orElse(null);
+        if (usuario == null){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return ResponseEntity.ok(usuarioMapper.converteParaDTO(usuario));
     }
 }

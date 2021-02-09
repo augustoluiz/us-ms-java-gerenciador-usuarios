@@ -28,6 +28,7 @@ public class UsuarioDTO {
     private Boolean indicadorMembresia;
     private Date dataBatismo;
     private Date dataUltimaAtualizacao;
+    private List<EmailDTO> emailsUsuario;
     private List<EnderecosUsuarioDTO> enderecosUsuario;
     private List<TelefonesUsuarioDTO> telefonesUsuario;
 
