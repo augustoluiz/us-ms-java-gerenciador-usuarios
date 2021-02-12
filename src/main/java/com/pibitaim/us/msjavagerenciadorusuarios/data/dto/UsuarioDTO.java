@@ -1,16 +1,10 @@
 package com.pibitaim.us.msjavagerenciadorusuarios.data.dto;
-
-import com.pibitaim.us.msjavagerenciadorusuarios.entity.EnderecosUsuario;
-import com.pibitaim.us.msjavagerenciadorusuarios.entity.TelefonesUsuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumEstadoCivil;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumSexoUsuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumTipoPessoa;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

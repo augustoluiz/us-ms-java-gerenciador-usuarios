@@ -2,20 +2,21 @@ package com.pibitaim.us.msjavagerenciadorusuarios.controller;
 
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.UsuarioDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.UsuarioMapper;
-import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.interfaces.MapperDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.Usuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.UsuarioService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -29,19 +30,17 @@ public class UsuarioController {
     private UsuarioMapper usuarioMapper;
 
     @GetMapping
-    public List<UsuarioDTO> findAll(){
-        return usuarioService.findAll().stream().map(usuario -> {
-            log.info(usuario.toString());
-            return usuarioMapper.converteParaDTO(usuario);
-        }).collect(Collectors.toList());
+    @Cacheable(value = "listaUsuarios")
+    public Page<UsuarioDTO> findAll(@PageableDefault(sort = "cpfCnpj", direction = Sort.Direction.ASC, page = 0, size = 10)Pageable paginacao){
+        return usuarioMapper.converteParaDTO(usuarioService.findAll(paginacao));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioDTO> findById(@PathVariable Long id){
-        Usuario usuario = usuarioService.findById(id).orElse(null);
-        if (usuario == null){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        Optional<Usuario> usuario = usuarioService.findById(id);
+        if (usuario.isPresent()){
+            return ResponseEntity.ok(usuarioMapper.converteParaDTO(usuario.get()));
         }
-        return ResponseEntity.ok(usuarioMapper.converteParaDTO(usuario));
+        return ResponseEntity.notFound().build();
     }
 }
