@@ -1,12 +1,16 @@
 package com.pibitaim.us.msjavagerenciadorusuarios.entity;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Data
+@Getter
+@Setter
 @Entity(name = "TBUS005_END_USU")
 public class EnderecosUsuario {
 

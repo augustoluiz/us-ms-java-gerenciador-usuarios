@@ -1,7 +1,9 @@
 package com.pibitaim.us.msjavagerenciadorusuarios.data.mapper;
 
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.UsuarioDTO;
+import com.pibitaim.us.msjavagerenciadorusuarios.data.form.UsuarioForm;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.interfaces.MapperDTO;
+import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.interfaces.MapperForm;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.Usuario;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -11,7 +13,7 @@ import java.util.function.Function;
 
 
 @Component
-public class UsuarioMapper implements MapperDTO<Usuario, UsuarioDTO> {
+public class UsuarioMapper implements MapperDTO<Usuario, UsuarioDTO>, MapperForm<Usuario, UsuarioForm> {
 
     private static final ModelMapper mapper = new ModelMapper();
 
@@ -19,6 +21,12 @@ public class UsuarioMapper implements MapperDTO<Usuario, UsuarioDTO> {
     public UsuarioDTO converteParaDTO(Usuario usuario) {
         return mapper.typeMap(Usuario.class, UsuarioDTO.class).map(usuario);
     }
+
+    @Override
+    public Usuario converteParaEntity(UsuarioForm usuarioForm) {
+        return mapper.typeMap(UsuarioForm.class, Usuario.class).map(usuarioForm);
+    }
+
 
     @Override
     public Page<UsuarioDTO> converteParaDTO(Page<Usuario> usuarios) {

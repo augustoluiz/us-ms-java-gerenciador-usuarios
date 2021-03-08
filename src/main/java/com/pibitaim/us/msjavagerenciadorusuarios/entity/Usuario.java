@@ -82,6 +82,18 @@ public class Usuario {
     )
     private List<Email> emailsUsuario;
 
+    public void setEnderecosUsuario(List<EnderecosUsuario> enderecosUsuario) {
+        this.enderecosUsuario = enderecosUsuario;
+    }
+
+    public void setTelefonesUsuario(List<TelefonesUsuario> telefonesUsuario) {
+        this.telefonesUsuario = telefonesUsuario;
+    }
+
+    public void setEmailsUsuario(List<Email> emailsUsuario) {
+        this.emailsUsuario = emailsUsuario;
+    }
+
     @Override
     public String toString() {
         return "Usuario{" +
