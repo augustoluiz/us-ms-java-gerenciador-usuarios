@@ -5,6 +5,7 @@ import com.pibitaim.us.msjavagerenciadorusuarios.data.form.UsuarioForm;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.UsuarioMapper;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.Usuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.UsuarioService;
+import com.pibitaim.us.msjavagerenciadorusuarios.utils.SenhaInicial;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -18,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
+import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 @Slf4j
@@ -49,17 +52,18 @@ public class UsuarioController {
     @PostMapping
     @Transactional
     @CacheEvict(value = "listaUsuarios", allEntries = true)
-    public ResponseEntity<UsuarioDTO> save(@RequestBody UsuarioForm usuarioForm){
+    public ResponseEntity<UsuarioDTO> save(@RequestBody @Valid UsuarioForm usuarioForm) throws NoSuchAlgorithmException {
         if(usuarioExiste(usuarioForm.getCpfCnpj())){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-        return new ResponseEntity<UsuarioDTO>(usuarioMapper.converteParaDTO(usuarioService.save(usuarioMapper.converteParaEntity(usuarioForm))), HttpStatus.CREATED);
+        String senhaInicial = new SenhaInicial().geraSenhaInicial();
+        return new ResponseEntity<UsuarioDTO>(usuarioMapper.converteParaDTO(usuarioService.save(usuarioMapper.converteParaEntity(usuarioForm, senhaInicial))), HttpStatus.CREATED);
     }
 
     @PutMapping("/{cpfCnpj}")
     @Transactional
     @CacheEvict(value = "listaUsuarios", allEntries = true)
-    public ResponseEntity<UsuarioDTO> update(@PathVariable Long cpfCnpj, @RequestBody UsuarioForm usuarioForm){
+    public ResponseEntity<UsuarioDTO> update(@PathVariable Long cpfCnpj, @RequestBody @Valid UsuarioForm usuarioForm){
         if (usuarioExiste(cpfCnpj)){
             usuarioService.update(usuarioForm, cpfCnpj);
             return new ResponseEntity<UsuarioDTO>(usuarioMapper.converteParaDTO(usuarioService.findByCpfCnpj(usuarioForm.getCpfCnpj()).get()), HttpStatus.OK);

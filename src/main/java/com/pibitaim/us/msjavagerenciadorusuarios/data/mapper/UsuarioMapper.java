@@ -23,8 +23,10 @@ public class UsuarioMapper implements MapperDTO<Usuario, UsuarioDTO>, MapperForm
     }
 
     @Override
-    public Usuario converteParaEntity(UsuarioForm usuarioForm) {
-        return mapper.typeMap(UsuarioForm.class, Usuario.class).map(usuarioForm);
+    public Usuario converteParaEntity(UsuarioForm usuarioForm, String senhaInicial) {
+        return mapper.typeMap(UsuarioForm.class, Usuario.class).addMappings(mapper -> {
+            mapper.map(src -> senhaInicial, Usuario::setSenhaAcessoUsuario);
+        }).map(usuarioForm);
     }
 
 

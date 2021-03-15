@@ -41,9 +41,9 @@ public class UsuarioServiceImpl implements UsuarioService {
             usuarioRepository.update(usuarioForm.getCpfCnpj(),
                                         usuarioForm.getDataBatismo(),
                                         usuarioForm.getDataNascimento(),
-                                        usuarioForm.getEnumEstadoCivil().toString(),
-                                        usuarioForm.getEnumSexoUsuario().toString(),
-                                        usuarioForm.getEnumTipoPessoa().toString(),
+                                        usuarioForm.getEstadoCivil().toString(),
+                                        usuarioForm.getSexoUsuario().toString(),
+                                        usuarioForm.getTipoPessoa().toString(),
                                         usuarioForm.getIndicadorMembresia(),
                                         usuarioForm.getNomeUsuario(),
                                         cpfCnpjOriginal);
