@@ -37,4 +37,15 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     void deleteByCpfCnpj(Long cpfCnpj);
 
+    @Query(value = "SELECT * FROM TBUS001_CAD_UNI_USU " +
+            "WHERE CPF_CNPJ = :cpfCnpj " +
+            "  AND SEN_ACE_USU = :senhaAtual", nativeQuery = true)
+    Optional<Usuario> findByCpfCnpj(@Param("cpfCnpj") Long cpfCnpj, @Param("senhaAtual") String senhaAtual);
+
+    @Modifying(clearAutomatically = true)
+    @Query(value = "UPDATE TBUS001_CAD_UNI_USU " +
+            "SET SEN_ACE_USU = :novaSenha " +
+            "WHERE CPF_CNPJ = :cpfCnpj", nativeQuery = true)
+    void updateSenha(@Param("cpfCnpj") Long cpfCnpj, @Param("novaSenha") String novaSenha);
+
 }

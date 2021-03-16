@@ -2,9 +2,11 @@ package com.pibitaim.us.msjavagerenciadorusuarios.controller;
 
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.UsuarioDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.form.UsuarioForm;
+import com.pibitaim.us.msjavagerenciadorusuarios.data.form.UsuarioSenhaForm;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.UsuarioMapper;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.Usuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.UsuarioService;
+import com.pibitaim.us.msjavagerenciadorusuarios.utils.EncoderMD5;
 import com.pibitaim.us.msjavagerenciadorusuarios.utils.SenhaInicial;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +73,17 @@ public class UsuarioController {
         return ResponseEntity.notFound().build();
     }
 
+    @PatchMapping("/alteraSenha/{cpfCnpj}")
+    @Transactional
+    @CacheEvict(value = "listaUsuarios", allEntries = true)
+    public ResponseEntity alteraSenha(@PathVariable Long cpfCnpj, @RequestBody @Valid UsuarioSenhaForm usuarioSenhaForm) throws NoSuchAlgorithmException {
+        if(validaUsuarioESenha(cpfCnpj, usuarioSenhaForm.getSenhaAtual())){
+            usuarioService.updateSenha(cpfCnpj, usuarioSenhaForm.getNovaSenha());
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     @DeleteMapping("/{cpfCnpj}")
     @Transactional
     @CacheEvict(value = "listaUsuarios", allEntries = true)
@@ -84,6 +97,15 @@ public class UsuarioController {
 
     private boolean usuarioExiste(Long cpfCnpj){
         return usuarioService.findByCpfCnpj(cpfCnpj).isPresent();
+    }
+
+    private boolean validaUsuarioESenha(Long cpfCnpj, String senhaAtual) throws NoSuchAlgorithmException {
+        try{
+            senhaAtual = new EncoderMD5().encodeToMD5(senhaAtual);
+            return usuarioService.findByCpfCnpjAndSenha(cpfCnpj, senhaAtual).isPresent();
+        }catch (NoSuchAlgorithmException exception) {
+            throw new NoSuchAlgorithmException("Erro de validações internas");
+        }
     }
 
 }
