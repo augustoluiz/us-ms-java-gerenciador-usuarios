@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 
 @Service
 public class EnderecoServiceImpl implements EnderecoService {
@@ -18,5 +20,10 @@ public class EnderecoServiceImpl implements EnderecoService {
     @Override
     public Page<Endereco> findAll(Pageable paginacao) {
         return enderecoRepository.findAll(paginacao);
+    }
+
+    @Override
+    public Optional<Endereco> findById(Long id) {
+        return enderecoRepository.findById(id);
     }
 }
