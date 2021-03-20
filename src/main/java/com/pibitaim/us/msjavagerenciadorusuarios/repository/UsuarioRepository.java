@@ -44,8 +44,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     @Modifying(clearAutomatically = true)
     @Query(value = "UPDATE TBUS001_CAD_UNI_USU " +
-            "SET SEN_ACE_USU = :novaSenha " +
+            "SET SEN_ACE_USU = :novaSenha," +
+            "    DAT_ULT_ATU = :dataUltimaAtualizacao " +
             "WHERE CPF_CNPJ = :cpfCnpj", nativeQuery = true)
-    void updateSenha(@Param("cpfCnpj") Long cpfCnpj, @Param("novaSenha") String novaSenha);
+    void updateSenha(@Param("cpfCnpj") Long cpfCnpj, @Param("novaSenha") String novaSenha, @Param("dataUltimaAtualizacao") Date dataUltimaAtualizacao);
 
 }

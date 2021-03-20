@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -66,7 +67,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     public void updateSenha(Long cpfCnpj, String novaSenha) throws NoSuchAlgorithmException {
         try {
             novaSenha = new EncoderMD5().encodeToMD5(novaSenha);
-            usuarioRepository.updateSenha(cpfCnpj, novaSenha);
+            usuarioRepository.updateSenha(cpfCnpj, novaSenha, new Date());
         } catch (NoSuchAlgorithmException exception) {
             throw new NoSuchAlgorithmException("Erro inesperado ao salvar o dado");
         }

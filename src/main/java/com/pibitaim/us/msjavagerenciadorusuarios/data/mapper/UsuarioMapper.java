@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.function.Function;
 
 
@@ -26,6 +27,7 @@ public class UsuarioMapper implements MapperDTO<Usuario, UsuarioDTO>, MapperForm
     public Usuario converteParaEntity(UsuarioForm usuarioForm, String senhaInicial) {
         return mapper.typeMap(UsuarioForm.class, Usuario.class).addMappings(mapper -> {
             mapper.map(src -> senhaInicial, Usuario::setSenhaAcessoUsuario);
+            mapper.map(src -> new Date(), Usuario::setDataUltimaAtualizacao);
         }).map(usuarioForm);
     }
 
