@@ -26,4 +26,6 @@ public interface UsuarioService {
 
     void updateSenha(Long cpfCnpj, String novaSenha) throws NoSuchAlgorithmException;
 
+    Page<Usuario> findByEnderecoId(Pageable paginacao, Long enderecoId);
+
 }

@@ -73,4 +73,9 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
     }
 
+    @Override
+    public Page<Usuario> findByEnderecoId(Pageable paginacao, Long enderecoId) {
+        return usuarioRepository.findByEnderecoId(paginacao, enderecoId);
+    }
+
 }

@@ -1,9 +1,11 @@
 package com.pibitaim.us.msjavagerenciadorusuarios.controller;
 
+import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.EnderecoUtils;
 import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.UsuarioUtils;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.EnderecoDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.UsuarioDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.EnderecoMapper;
+import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.UsuarioMapper;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.Endereco;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.EnderecoService;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.UsuarioService;
@@ -35,6 +37,9 @@ public class EnderecoController {
     @Autowired
     private EnderecoMapper enderecoMapper;
 
+    @Autowired
+    private UsuarioMapper usuarioMapper;
+
     @GetMapping
     @Cacheable(value = "listaEnderecos")
     public Page<EnderecoDTO> findAll(@PageableDefault(sort = "cepEndereco", direction = Sort.Direction.ASC, page = 0, size = 10) Pageable paginacao){
@@ -48,17 +53,19 @@ public class EnderecoController {
     }
 
     @GetMapping("/enderecosUsuario/{usuarioCpfCnpj}")
-    public ResponseEntity<Page<EnderecoDTO>> findByUsuarioId(@PathVariable Long usuarioCpfCnpj, @PageableDefault(sort = "cep_end", direction = Sort.Direction.ASC, page = 0, size = 10) Pageable paginacao){
+    public ResponseEntity<Page<EnderecoDTO>> findByUsuarioId(@PathVariable Long usuarioCpfCnpj, @PageableDefault(sort = "CEP_END", direction = Sort.Direction.ASC, page = 0, size = 10) Pageable paginacao){
         if (!UsuarioUtils.usuarioExiste(usuarioService, usuarioCpfCnpj)){
             return ResponseEntity.notFound().build();
         }
         return new ResponseEntity<Page<EnderecoDTO>>(enderecoMapper.converteParaDTO(enderecoService.findByUsuarioId(paginacao, usuarioCpfCnpj)), HttpStatus.OK);
     }
 
-    @GetMapping("/usuariosEndereco/{id}")
-    public Page<UsuarioDTO> findUsuariosByEnderecoId(){
-        //TODO
-        return null;
+    @GetMapping("/usuariosEndereco/{enderecoId}")
+    public ResponseEntity<Page<UsuarioDTO>> findUsuariosByEnderecoId(@PathVariable Long enderecoId, @PageableDefault(sort = "CPF_CNPJ", direction = Sort.Direction.ASC, page = 0, size = 10) Pageable paginacao){
+        if(!EnderecoUtils.enderecoExiste(enderecoService, enderecoId)){
+            return ResponseEntity.notFound().build();
+        }
+        return new ResponseEntity<Page<UsuarioDTO>>(usuarioMapper.converteParaDTO(usuarioService.findByEnderecoId(paginacao, enderecoId)), HttpStatus.OK);
     }
 
     @PostMapping
@@ -73,10 +80,6 @@ public class EnderecoController {
     public ResponseEntity<EnderecoDTO> update(){
         //TODO
         return null;
-    }
-
-    private boolean enderecoExiste(Long id){
-        return enderecoService.findById(id).isPresent();
     }
 
 }

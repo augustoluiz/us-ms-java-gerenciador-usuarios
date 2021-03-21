@@ -1,6 +1,8 @@
 package com.pibitaim.us.msjavagerenciadorusuarios.repository;
 
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.Usuario;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -48,5 +50,11 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
             "    DAT_ULT_ATU = :dataUltimaAtualizacao " +
             "WHERE CPF_CNPJ = :cpfCnpj", nativeQuery = true)
     void updateSenha(@Param("cpfCnpj") Long cpfCnpj, @Param("novaSenha") String novaSenha, @Param("dataUltimaAtualizacao") Date dataUltimaAtualizacao);
+
+    @Query(value = "SELECT * FROM TBUS001_CAD_UNI_USU USU " +
+            "INNER JOIN TBUS005_END_USU END " +
+            "ON (USU.CPF_CNPJ = END.CPF_CNPJ) " +
+            "WHERE END.COD_CAD_END = :enderecoId", nativeQuery = true)
+    Page<Usuario> findByEnderecoId(Pageable paginacao, @Param("enderecoId") Long enderecoId);
 
 }
