@@ -11,4 +11,6 @@ public interface EnderecoService {
     Page<Endereco> findAll(Pageable paginacao);
 
     Optional<Endereco> findById(Long id);
+
+    Page<Endereco> findByUsuarioId(Pageable paginacao, Long usuarioCpfCnpj);
 }

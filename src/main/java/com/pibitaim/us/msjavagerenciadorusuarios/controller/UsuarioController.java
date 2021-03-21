@@ -1,5 +1,6 @@
 package com.pibitaim.us.msjavagerenciadorusuarios.controller;
 
+import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.UsuarioUtils;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.UsuarioDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.form.UsuarioForm;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.form.UsuarioSenhaForm;
@@ -55,7 +56,7 @@ public class UsuarioController {
     @Transactional
     @CacheEvict(value = "listaUsuarios", allEntries = true)
     public ResponseEntity<UsuarioDTO> save(@RequestBody @Valid UsuarioForm usuarioForm) throws NoSuchAlgorithmException {
-        if(usuarioExiste(usuarioForm.getCpfCnpj())){
+        if(UsuarioUtils.usuarioExiste(usuarioService, usuarioForm.getCpfCnpj())){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         String senhaInicial = new SenhaInicial().geraSenhaInicial();
@@ -66,7 +67,7 @@ public class UsuarioController {
     @Transactional
     @CacheEvict(value = "listaUsuarios", allEntries = true)
     public ResponseEntity<UsuarioDTO> update(@PathVariable Long cpfCnpj, @RequestBody @Valid UsuarioForm usuarioForm){
-        if (usuarioExiste(cpfCnpj)){
+        if (UsuarioUtils.usuarioExiste(usuarioService, cpfCnpj)){
             usuarioService.update(usuarioForm, cpfCnpj);
             return new ResponseEntity<UsuarioDTO>(usuarioMapper.converteParaDTO(usuarioService.findByCpfCnpj(usuarioForm.getCpfCnpj()).get()), HttpStatus.OK);
         }
@@ -88,15 +89,11 @@ public class UsuarioController {
     @Transactional
     @CacheEvict(value = "listaUsuarios", allEntries = true)
     public ResponseEntity delete(@PathVariable Long cpfCnpj){
-        if (usuarioExiste(cpfCnpj)){
+        if (UsuarioUtils.usuarioExiste(usuarioService, cpfCnpj)){
             usuarioService.deleteByCpfCnpj(cpfCnpj);
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
-    }
-
-    private boolean usuarioExiste(Long cpfCnpj){
-        return usuarioService.findByCpfCnpj(cpfCnpj).isPresent();
     }
 
     private boolean validaUsuarioESenha(Long cpfCnpj, String senhaAtual) throws NoSuchAlgorithmException {

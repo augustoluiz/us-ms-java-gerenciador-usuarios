@@ -26,4 +26,9 @@ public class EnderecoServiceImpl implements EnderecoService {
     public Optional<Endereco> findById(Long id) {
         return enderecoRepository.findById(id);
     }
+
+    @Override
+    public Page<Endereco> findByUsuarioId(Pageable paginacao, Long usuarioCpfCnpj) {
+        return enderecoRepository.findByUsuarioId(paginacao, usuarioCpfCnpj);
+    }
 }
