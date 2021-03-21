@@ -1,8 +1,6 @@
 package com.pibitaim.us.msjavagerenciadorusuarios.entity;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -11,6 +9,8 @@ import java.io.Serializable;
 @Data
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Embeddable
 public class EnderecosUsuarioId implements Serializable {
 

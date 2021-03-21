@@ -30,13 +30,13 @@ public enum EnumUF {
     SE("SERGIPE"),
     TO("TOCANTINS");
 
-    private String uf;
+    private final String uf;
 
     EnumUF(String uf){
         this.uf = uf.toUpperCase();
     }
 
     public String getUf() {
-        return uf;
+        return this.uf;
     }
 }

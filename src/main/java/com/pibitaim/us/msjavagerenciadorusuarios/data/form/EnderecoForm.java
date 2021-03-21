@@ -3,12 +3,13 @@ package com.pibitaim.us.msjavagerenciadorusuarios.data.form;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumTipoEndereco;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumUF;
 import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
-import java.util.Date;
+import javax.validation.constraints.Size;
 
 @Data
 @Getter
@@ -16,13 +17,15 @@ import java.util.Date;
 public class EnderecoForm {
 
     @NotNull
-    private Long codigoCadastroEndereco;
+    private Long cpfCnpjUsuario;
 
     @NotNull
-    private Date dataUltimaAtualizacao;
+    private boolean enderecoPrincipal;
 
+    @Size(max = 8)
     @NotNull
-    private Integer cepEndereco;
+    @NotBlank
+    private String cepEndereco;
 
     @NotNull
     private EnumUF uf;
@@ -39,8 +42,6 @@ public class EnderecoForm {
     @NotBlank
     private String logradouroEndereco;
 
-    @NotNull
-    @NotBlank
     private String complementoEndereco;
 
     @NotNull

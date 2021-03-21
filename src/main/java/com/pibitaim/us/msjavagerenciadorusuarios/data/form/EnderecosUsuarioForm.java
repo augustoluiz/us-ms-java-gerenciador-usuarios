@@ -11,7 +11,10 @@ import lombok.Setter;
 public class EnderecosUsuarioForm {
 
     @NotNull
-    private EnderecoForm endereco;
+    private Long codigoCadastroEndereco;
+
+    @NotNull
+    private Long cpfCnpjUsuario;
 
     @NotNull
     private Integer nivelPrioridade;

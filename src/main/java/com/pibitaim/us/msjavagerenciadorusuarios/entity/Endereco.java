@@ -32,7 +32,6 @@ public class Endereco {
     private Integer cepEndereco;
 
     @NotNull
-    @NotBlank
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "CHAR(02)", name = "UF_END")
     private EnumUF uf;
@@ -52,8 +51,6 @@ public class Endereco {
     @Column(columnDefinition = "VARCHAR(255)", name = "LOG_END")
     private String logradouroEndereco;
 
-    @NotNull
-    @NotBlank
     @Column(columnDefinition = "VARCHAR(255)", name = "COM_END")
     private String complementoEndereco;
 

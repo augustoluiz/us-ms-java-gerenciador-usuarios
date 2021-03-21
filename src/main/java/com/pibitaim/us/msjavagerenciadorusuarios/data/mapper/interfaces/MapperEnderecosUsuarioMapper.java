@@ -1,6 +1,6 @@
 package com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.interfaces;
 
-public interface MapperForm<Entity, Form> {
+public interface MapperEnderecosUsuarioMapper<Entity, Form> {
 
     Entity converteParaEntity(Form form);
 }

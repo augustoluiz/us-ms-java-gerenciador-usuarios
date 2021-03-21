@@ -3,7 +3,7 @@ package com.pibitaim.us.msjavagerenciadorusuarios.data.mapper;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.UsuarioDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.form.UsuarioForm;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.interfaces.MapperDTO;
-import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.interfaces.MapperForm;
+import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.interfaces.MapperUsuarioForm;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.Usuario;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -14,7 +14,7 @@ import java.util.function.Function;
 
 
 @Component
-public class UsuarioMapper implements MapperDTO<Usuario, UsuarioDTO>, MapperForm<Usuario, UsuarioForm> {
+public class UsuarioMapper implements MapperDTO<Usuario, UsuarioDTO>, MapperUsuarioForm<Usuario, UsuarioForm> {
 
     private static final ModelMapper mapper = new ModelMapper();
 

@@ -18,4 +18,29 @@ public class EnderecosUsuarioServiceImpl implements EnderecosUsuarioService {
     public Optional<EnderecosUsuario> findEnderecoUsuarioById(Long cpfCnpj, Long codigoCadastroEndereco) {
         return enderecosUsuarioRepository.findEnderecoUsuarioById(cpfCnpj, codigoCadastroEndereco);
     }
+
+    @Override
+    public Integer qtdEnderecosPorCpfCnpj(Long cpfCnpjUsuario) {
+        return enderecosUsuarioRepository.qtdEnderecosPorCpfCnpj(cpfCnpjUsuario);
+    }
+
+    @Override
+    public Integer getUltimoNivelPrioridade(Long cpfCnpjUsuario) {
+        return enderecosUsuarioRepository.getUltimoNivelPrioridade(cpfCnpjUsuario);
+    }
+
+    @Override
+    public Boolean existeEnderecosCadastradosParaCpfCnpj(Long cpfCnpjUsuario) {
+        return enderecosUsuarioRepository.existeEnderecosCadastradosParaCpfCnpj(cpfCnpjUsuario).isPresent();
+    }
+
+    @Override
+    public void atualizaEnderecosPrincipais(Long cpfCnpjUsuario) {
+        enderecosUsuarioRepository.atualizaEnderecosPrincipais(cpfCnpjUsuario);
+    }
+
+    @Override
+    public EnderecosUsuario save(EnderecosUsuario enderecosUsuario) {
+        return enderecosUsuarioRepository.save(enderecosUsuario);
+    }
 }
