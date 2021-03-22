@@ -43,9 +43,9 @@ public class UsuarioController {
         return usuarioMapper.converteParaDTO(usuarioService.findAll(paginacao));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UsuarioDTO> findById(@PathVariable Long id){
-        Optional<Usuario> usuario = usuarioService.findById(id);
+    @GetMapping("/{cpfCnpj}")
+    public ResponseEntity<UsuarioDTO> findById(@PathVariable Long cpfCnpj){
+        Optional<Usuario> usuario = usuarioService.findByCpfCnpj(cpfCnpj);
         if (usuario.isPresent()){
             return ResponseEntity.ok(usuarioMapper.converteParaDTO(usuario.get()));
         }

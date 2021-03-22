@@ -12,6 +12,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @Getter
@@ -20,6 +21,11 @@ import java.util.List;
 public class Usuario {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @NotNull
+    @Column(name = "COD_IDE_USU")
+    private UUID codUsuario;
+
     @NotNull
     @Column(columnDefinition = "BIGINT(14)", name = "CPF_CNPJ")
     private Long cpfCnpj;

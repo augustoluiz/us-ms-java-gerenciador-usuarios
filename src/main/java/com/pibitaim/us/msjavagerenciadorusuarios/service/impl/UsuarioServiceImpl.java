@@ -60,7 +60,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Optional<Usuario> findByCpfCnpjAndSenha(Long cpfCnpj, String senhaAtual) {
-        return usuarioRepository.findByCpfCnpj(cpfCnpj, senhaAtual);
+        return usuarioRepository.findByCpfCnpjAndSenha(cpfCnpj, senhaAtual);
     }
 
     @Override

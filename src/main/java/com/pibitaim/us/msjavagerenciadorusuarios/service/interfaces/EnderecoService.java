@@ -15,4 +15,7 @@ public interface EnderecoService {
     Page<Endereco> findByUsuarioId(Pageable paginacao, Long usuarioCpfCnpj);
 
     Endereco save(Endereco endereco);
+
+    void deleteById(Long id);
+
 }

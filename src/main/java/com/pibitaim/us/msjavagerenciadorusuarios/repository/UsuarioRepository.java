@@ -13,7 +13,9 @@ import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-    Optional<Usuario> findByCpfCnpj(Long cpfCnpj);
+    @Query(value = "SELECT * FROM TBUS001_CAD_UNI_USU " +
+            "WHERE CPF_CNPJ = :cpfCnpj", nativeQuery = true)
+    Optional<Usuario> findByCpfCnpj(@Param("cpfCnpj") Long cpfCnpj);
 
     @Modifying(clearAutomatically = true)
     @Query(value = "UPDATE TBUS001_CAD_UNI_USU SET " +
@@ -42,7 +44,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     @Query(value = "SELECT * FROM TBUS001_CAD_UNI_USU " +
             "WHERE CPF_CNPJ = :cpfCnpj " +
             "  AND SEN_ACE_USU = :senhaAtual", nativeQuery = true)
-    Optional<Usuario> findByCpfCnpj(@Param("cpfCnpj") Long cpfCnpj, @Param("senhaAtual") String senhaAtual);
+    Optional<Usuario> findByCpfCnpjAndSenha(@Param("cpfCnpj") Long cpfCnpj, @Param("senhaAtual") String senhaAtual);
 
     @Modifying(clearAutomatically = true)
     @Query(value = "UPDATE TBUS001_CAD_UNI_USU " +

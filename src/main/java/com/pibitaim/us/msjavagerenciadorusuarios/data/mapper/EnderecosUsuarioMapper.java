@@ -16,8 +16,6 @@ public class EnderecosUsuarioMapper implements MapperEnderecosUsuarioMapper<Ende
 
     @Override
     public EnderecosUsuario converteParaEntity(EnderecosUsuarioForm enderecosUsuarioForm) {
-        return mapper.typeMap(EnderecosUsuarioForm.class, EnderecosUsuario.class).addMappings(mapper -> {
-            mapper.map(src -> new EnderecosUsuarioId(enderecosUsuarioForm.getCpfCnpjUsuario(), enderecosUsuarioForm.getCodigoCadastroEndereco()), EnderecosUsuario::setEnderecosUsuarioId);
-        }).map(enderecosUsuarioForm);
+        return mapper.map(enderecosUsuarioForm, EnderecosUsuario.class);
     }
 }

@@ -14,7 +14,7 @@ public class TelefonesUsuario {
     private TelefonesUsuarioId telefonesUsuarioId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CPF_CNPJ")
+    @JoinColumn(name = "COD_IDE_USU")
     @MapsId("usuarioId")
     private Usuario usuario;
 

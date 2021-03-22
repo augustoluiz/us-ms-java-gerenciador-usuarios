@@ -19,7 +19,7 @@ public class Email {
     private String emailUsuario;
 
     @ManyToOne
-    @JoinColumn(name = "CPF_CNPJ")
+    @JoinColumn(name = "COD_IDE_USU")
     private Usuario usuario;
 
     @NotNull

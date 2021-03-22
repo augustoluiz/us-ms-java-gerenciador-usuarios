@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
+import java.util.UUID;
 
 @Data
 @Getter
@@ -14,8 +15,8 @@ import java.io.Serializable;
 @Embeddable
 public class EnderecosUsuarioId implements Serializable {
 
-    @Column(name = "CPF_CNPJ")
-    private Long usuarioId;
+    @Column(name = "COD_IDE_USU")
+    private UUID usuarioId;
 
     @Column(name = "COD_CAD_END")
     private Long enderecoId;

@@ -115,8 +115,17 @@ public class EnderecoController {
     }
 
     @PutMapping("/{id}")
+    @Transactional
     @CacheEvict(value = "listaEnderecos", allEntries = true)
     public ResponseEntity<EnderecoDTO> update(){
+        //TODO
+        return null;
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    @CacheEvict(value = "listaEnderecos", allEntries = true)
+    public ResponseEntity delete(@PathVariable Long id){
         //TODO
         return null;
     }
