@@ -118,7 +118,7 @@ public class EnderecoController {
     @Transactional
     @CacheEvict(value = "listaEnderecos", allEntries = true)
     public ResponseEntity<EnderecoDTO> update(){
-        //TODO
+        //TODO - altera só as intormacoes do endereco, a cardinalidade com os usuarios não
         return null;
     }
 
@@ -126,7 +126,7 @@ public class EnderecoController {
     @Transactional
     @CacheEvict(value = "listaEnderecos", allEntries = true)
     public ResponseEntity delete(@PathVariable Long id){
-        //TODO
+        //TODO - quando deletear, deve excluir da tabela que relaciona com usuarios tbm
         return null;
     }
 

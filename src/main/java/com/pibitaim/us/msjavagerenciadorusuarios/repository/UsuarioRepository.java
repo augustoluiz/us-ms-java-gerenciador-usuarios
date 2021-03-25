@@ -56,7 +56,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     @Query(value = "SELECT * FROM TBUS001_CAD_UNI_USU USU " +
             "INNER JOIN TBUS005_END_USU END " +
-            "ON (USU.CPF_CNPJ = END.CPF_CNPJ) " +
+            "ON (USU.COD_IDE_USU = END.COD_IDE_USU) " +
             "WHERE END.COD_CAD_END = :enderecoId", nativeQuery = true)
     Page<Usuario> findByEnderecoId(Pageable paginacao, @Param("enderecoId") Long enderecoId);
 
