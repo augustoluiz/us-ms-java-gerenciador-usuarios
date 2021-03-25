@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Optional;
 
@@ -30,8 +31,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
             "NOM_USU = :nomeUsuario " +
             "WHERE CPF_CNPJ = :cpfCnpjOriginal", nativeQuery = true)
     void update(@Param("cpfCnpj") Long cpfCnpj,
-                   @Param("dataBatismo") Date dataBatismo,
-                   @Param("dataNascimento") Date dataNascimento,
+                   @Param("dataBatismo") LocalDate dataBatismo,
+                   @Param("dataNascimento") LocalDate dataNascimento,
                    @Param("estadoCivil") String estadoCivil,
                    @Param("sexoUsuario") String sexoUsuario,
                    @Param("tipoPessoa") String tipoPessoa,

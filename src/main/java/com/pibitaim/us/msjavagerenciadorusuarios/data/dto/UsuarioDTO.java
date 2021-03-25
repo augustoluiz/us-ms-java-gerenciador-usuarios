@@ -5,6 +5,8 @@ import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumTipoPessoa;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -17,10 +19,10 @@ public class UsuarioDTO {
     private String nomeUsuario;
     private EnumTipoPessoa enumTipoPessoa;
     private EnumSexoUsuario enumSexoUsuario;
-    private Date dataNascimento;
+    private LocalDate dataNascimento;
     private EnumEstadoCivil enumEstadoCivil;
     private Boolean indicadorMembresia;
-    private Date dataBatismo;
+    private LocalDate dataBatismo;
     private Date dataUltimaAtualizacao;
     private List<EmailDTO> emailsUsuario;
     private List<EnderecosUsuarioDTO> enderecosUsuario;

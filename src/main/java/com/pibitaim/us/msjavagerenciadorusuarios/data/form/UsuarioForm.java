@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @Getter
@@ -32,7 +32,7 @@ public class UsuarioForm {
     private EnumSexoUsuario sexoUsuario;
 
     @NotNull
-    private Date dataNascimento;
+    private LocalDate dataNascimento;
 
     @NotNull
     private EnumEstadoCivil estadoCivil;
@@ -40,6 +40,6 @@ public class UsuarioForm {
     @NotNull
     private Boolean indicadorMembresia;
 
-    private Date dataBatismo;
+    private LocalDate dataBatismo;
 
 }

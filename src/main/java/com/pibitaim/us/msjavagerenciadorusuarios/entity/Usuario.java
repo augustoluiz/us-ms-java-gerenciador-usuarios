@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -45,7 +46,8 @@ public class Usuario {
 
     @NotNull
     @Column(columnDefinition = "DATE", name = "DAT_NSC")
-    private Date dataNascimento;
+    private LocalDate dataNascimento;
+
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "CHAR(01)", name = "EST_CIV")
@@ -56,7 +58,7 @@ public class Usuario {
     private Boolean indicadorMembresia;
 
     @Column(columnDefinition = "DATE", name = "DAT_BAT")
-    private Date dataBatismo;
+    private LocalDate dataBatismo;
 
     @NotNull
     @Column(name = "DAT_ULT_ATU")
