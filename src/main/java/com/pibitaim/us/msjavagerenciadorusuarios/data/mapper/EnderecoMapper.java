@@ -1,6 +1,7 @@
 package com.pibitaim.us.msjavagerenciadorusuarios.data.mapper;
 
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.EnderecoDTO;
+import com.pibitaim.us.msjavagerenciadorusuarios.data.form.EnderecoAtributosForm;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.form.EnderecoForm;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.interfaces.MapperDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.interfaces.MapperForm;
@@ -38,5 +39,13 @@ public class EnderecoMapper implements MapperDTO<Endereco, EnderecoDTO>, MapperF
             mapper.map(src -> new Date(), Endereco::setDataUltimaAtualizacao);
             mapper.map(src -> Integer.parseInt(enderecoForm.getCepEndereco()), Endereco::setCepEndereco);
         }).map(enderecoForm);
+    }
+
+    public Endereco converteParaEntity(EnderecoAtributosForm enderecoAtributosForm, Long codigoCadastroEndereco) {
+        return mapper.typeMap(EnderecoAtributosForm.class, Endereco.class).addMappings(mapper -> {
+            mapper.map(src -> new Date(), Endereco::setDataUltimaAtualizacao);
+            mapper.map(src -> Integer.parseInt(enderecoAtributosForm.getCepEndereco()), Endereco::setCepEndereco);
+            mapper.map(src -> codigoCadastroEndereco, Endereco::setCodigoCadastroEndereco);
+        }).map(enderecoAtributosForm);
     }
 }

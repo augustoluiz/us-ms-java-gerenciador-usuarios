@@ -11,12 +11,21 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 
-public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
+
+    @Query(value = "SELECT COD_IDE_USU FROM TBUS001_CAD_UNI_USU " +
+            "WHERE CPF_CNPJ = :cpfCnpj", nativeQuery = true)
+    Optional<UUID> findCodUsuarioByCpfCnpj(@Param("cpfCnpj") Long cpfCnpj);
 
     @Query(value = "SELECT * FROM TBUS001_CAD_UNI_USU " +
             "WHERE CPF_CNPJ = :cpfCnpj", nativeQuery = true)
     Optional<Usuario> findByCpfCnpj(@Param("cpfCnpj") Long cpfCnpj);
+
+    @Query(value = "SELECT * FROM TBUS001_CAD_UNI_USU " +
+            "WHERE COD_IDE_USU = :codUsuario", nativeQuery = true)
+    Optional<Usuario> findByCodUsuario(@Param("codUsuario") UUID codUsuario);
 
     @Modifying(clearAutomatically = true)
     @Query(value = "UPDATE TBUS001_CAD_UNI_USU SET " +

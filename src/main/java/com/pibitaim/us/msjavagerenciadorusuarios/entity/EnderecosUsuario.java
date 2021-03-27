@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Data
 @Getter
@@ -35,12 +36,17 @@ public class EnderecosUsuario {
     @Column(name = "END_PRI")
     private Boolean enderecoPrincipal;
 
+    @NotNull
+    @Column(name = "DAT_ULT_ATU")
+    private Date dataUltimaAtualizacao;
+
     @Override
     public String toString() {
         return "EnderecosUsuario{" +
                 "enderecosUsuarioId=" + enderecosUsuarioId +
                 ", nivelPrioridade=" + nivelPrioridade +
                 ", enderecoPrincipal=" + enderecoPrincipal +
+                ", dataUltimaAtualizacao=" + dataUltimaAtualizacao +
                 '}';
     }
 }

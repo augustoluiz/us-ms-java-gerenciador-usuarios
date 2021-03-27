@@ -3,11 +3,11 @@ package com.pibitaim.us.msjavagerenciadorusuarios.data.form;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumEstadoCivil;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumSexoUsuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumTipoPessoa;
-import org.hibernate.validator.constraints.Length;
 import com.sun.istack.NotNull;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;

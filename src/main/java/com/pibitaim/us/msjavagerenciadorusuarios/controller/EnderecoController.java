@@ -4,12 +4,14 @@ import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.EnderecoUtils;
 import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.UsuarioUtils;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.EnderecoDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.UsuarioDTO;
+import com.pibitaim.us.msjavagerenciadorusuarios.data.form.EnderecoAtributosForm;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.form.EnderecoForm;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.form.EnderecosUsuarioForm;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.EnderecoMapper;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.EnderecosUsuarioMapper;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.UsuarioMapper;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.Endereco;
+import com.pibitaim.us.msjavagerenciadorusuarios.entity.Usuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.EnderecoService;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.EnderecosUsuarioService;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.UsuarioService;
@@ -84,9 +86,12 @@ public class EnderecoController {
     @Transactional
     @CacheEvict(value = "listaEnderecos", allEntries = true)
     public ResponseEntity<EnderecoDTO> save(@RequestBody @Valid EnderecoForm enderecoForm){
-        if(!UsuarioUtils.usuarioExiste(usuarioService, enderecoForm.getCpfCnpjUsuario())){
+        Optional<Usuario> usuario = usuarioService.findByCpfCnpj(enderecoForm.getCpfCnpjUsuario());
+
+        if(!usuario.isPresent()){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
+
         Endereco endereco = enderecoService.save(enderecoMapper.converteParaEntity(enderecoForm));
         EnderecoDTO enderecoDTO = enderecoMapper.converteParaDTO(endereco);
 
@@ -94,32 +99,36 @@ public class EnderecoController {
         enderecosUsuarioForm.setCodigoCadastroEndereco(endereco.getCodigoCadastroEndereco());
         enderecosUsuarioForm.setCpfCnpjUsuario(enderecoForm.getCpfCnpjUsuario());
 
-        boolean existeEnderecosCadastrados = EnderecoUtils.existeEnderecosCadastradosParaCpfCnpj(enderecosUsuarioService, enderecoForm.getCpfCnpjUsuario());
+        boolean existeEnderecosCadastrados = EnderecoUtils.existeEnderecosCadastradosParaCodUsuario(enderecosUsuarioService, usuario.get().getCodUsuario().toString());
 
         if(enderecoForm.isEnderecoPrincipal() && existeEnderecosCadastrados){
-            enderecosUsuarioService.atualizaEnderecosPrincipais(enderecoForm.getCpfCnpjUsuario());
+            enderecosUsuarioService.atualizaEnderecosPrincipais(usuario.get().getCodUsuario().toString());
         } else if(!existeEnderecosCadastrados && !enderecoForm.isEnderecoPrincipal()){
             enderecoForm.setEnderecoPrincipal(true);
         }
 
         enderecosUsuarioForm.setEnderecoPrincipal(enderecoForm.isEnderecoPrincipal());
 
-        Integer nivelPrioridade = EnderecoUtils.qtdEnderecosPorCpfCnpj(enderecosUsuarioService, enderecoForm.getCpfCnpjUsuario()) == 0 ? 1
-                                : EnderecoUtils.getUltimoNivelPrioridade(enderecosUsuarioService, enderecoForm.getCpfCnpjUsuario()) + 1;
+        Integer nivelPrioridade = EnderecoUtils.qtdEnderecosCodUsuario(enderecosUsuarioService, usuario.get().getCodUsuario().toString()) == 0 ? 1
+                                : EnderecoUtils.getUltimoNivelPrioridade(enderecosUsuarioService, usuario.get().getCodUsuario().toString()) + 1;
 
         enderecosUsuarioForm.setNivelPrioridade(nivelPrioridade);
 
-        enderecosUsuarioService.save(enderecosUsuarioMapper.converteParaEntity(enderecosUsuarioForm));
+        enderecosUsuarioService.save(enderecosUsuarioMapper.converteParaEntity(enderecosUsuarioForm, usuario.get(), endereco));
 
         return new ResponseEntity<EnderecoDTO>(enderecoDTO, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{cpfCnpj}/{id}")
     @Transactional
     @CacheEvict(value = "listaEnderecos", allEntries = true)
-    public ResponseEntity<EnderecoDTO> update(){
+    public ResponseEntity<EnderecoDTO> update(@PathVariable Long cpfCnpjUsuario, @PathVariable Long id, @RequestBody @Valid EnderecoAtributosForm enderecoAtributosForm){
         //TODO - altera só as intormacoes do endereco, a cardinalidade com os usuarios não
-        return null;
+        if(!EnderecoUtils.enderecoExiste(enderecoService, id)){
+            return ResponseEntity.notFound().build();
+        }
+        return new ResponseEntity<EnderecoDTO>(enderecoMapper.converteParaDTO(enderecoService.save(enderecoService.save(enderecoMapper.converteParaEntity(enderecoAtributosForm, id)))), HttpStatus.CREATED);
+
     }
 
     @DeleteMapping("/{id}")

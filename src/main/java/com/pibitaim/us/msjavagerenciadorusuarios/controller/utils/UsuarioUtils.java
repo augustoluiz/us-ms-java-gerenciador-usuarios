@@ -1,6 +1,5 @@
 package com.pibitaim.us.msjavagerenciadorusuarios.controller.utils;
 
-import com.pibitaim.us.msjavagerenciadorusuarios.service.impl.UsuarioServiceImpl;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.UsuarioService;
 
 

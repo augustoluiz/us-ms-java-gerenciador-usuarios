@@ -7,12 +7,13 @@ import org.springframework.data.domain.Pageable;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface UsuarioService {
 
-    Page<Usuario> findAll(Pageable paginacao);
+    Optional<UUID> findCodUsuarioByCpfCnpj(Long cpfCnpj);
 
-    Optional<Usuario> findById(Long id);
+    Page<Usuario> findAll(Pageable paginacao);
 
     Usuario save(Usuario usuario);
 

@@ -7,6 +7,7 @@ import com.sun.istack.NotNull;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -23,7 +24,7 @@ public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @NotNull
+    @Type(type="uuid-char")
     @Column(name = "COD_IDE_USU")
     private UUID codUsuario;
 
@@ -105,7 +106,8 @@ public class Usuario {
     @Override
     public String toString() {
         return "Usuario{" +
-                "cpfCnpj=" + cpfCnpj +
+                "codUsuario=" + codUsuario +
+                ", cpfCnpj=" + cpfCnpj +
                 ", nomeUsuario='" + nomeUsuario + '\'' +
                 ", enumTipoPessoa=" + enumTipoPessoa +
                 ", enumSexoUsuario=" + enumSexoUsuario +
@@ -115,8 +117,9 @@ public class Usuario {
                 ", dataBatismo=" + dataBatismo +
                 ", dataUltimaAtualizacao=" + dataUltimaAtualizacao +
                 ", senhaAcessoUsuario='" + senhaAcessoUsuario + '\'' +
-                ", enderecosUsuario=" + enderecosUsuario.toString() +
-                ", telefonesUsuarios=" + telefonesUsuario.toString() +
+                ", enderecosUsuario=" + enderecosUsuario +
+                ", telefonesUsuario=" + telefonesUsuario +
+                ", emailsUsuario=" + emailsUsuario +
                 '}';
     }
 }

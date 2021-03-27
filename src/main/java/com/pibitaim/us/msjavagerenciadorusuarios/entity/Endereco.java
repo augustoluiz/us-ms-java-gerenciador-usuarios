@@ -2,13 +2,13 @@ package com.pibitaim.us.msjavagerenciadorusuarios.entity;
 
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumTipoEndereco;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumUF;
-import com.sun.istack.NotNull;
 import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -78,7 +78,7 @@ public class Endereco {
                 ", logradouroEndereco='" + logradouroEndereco + '\'' +
                 ", complementoEndereco='" + complementoEndereco + '\'' +
                 ", tipoEndereco=" + tipoEndereco +
-                ", enderecosUsuario=" + enderecosUsuario.toString() +
+                ", enderecosUsuario=" + enderecosUsuario +
                 '}';
     }
 }

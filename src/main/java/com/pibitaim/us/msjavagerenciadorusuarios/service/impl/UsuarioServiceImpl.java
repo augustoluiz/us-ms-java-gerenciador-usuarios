@@ -7,12 +7,13 @@ import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.UsuarioServi
 import com.pibitaim.us.msjavagerenciadorusuarios.utils.EncoderMD5;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
@@ -21,13 +22,13 @@ public class UsuarioServiceImpl implements UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     @Override
-    public Page<Usuario> findAll(Pageable paginacao) {
-        return usuarioRepository.findAll(paginacao);
+    public Optional<UUID> findCodUsuarioByCpfCnpj(Long cpfCnpj) {
+        return usuarioRepository.findCodUsuarioByCpfCnpj(cpfCnpj);
     }
 
     @Override
-    public Optional<Usuario> findById(Long id) {
-        return usuarioRepository.findById(id);
+    public Page<Usuario> findAll(Pageable paginacao) {
+        return usuarioRepository.findAll(paginacao);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.pibitaim.us.msjavagerenciadorusuarios.data.dto;
 
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumTipoTelefone;
 import lombok.Data;
+
 import java.util.Date;
 
 @Data

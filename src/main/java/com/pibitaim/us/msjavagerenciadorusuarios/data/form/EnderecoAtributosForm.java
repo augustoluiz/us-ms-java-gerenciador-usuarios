@@ -13,10 +13,7 @@ import javax.validation.constraints.Size;
 @Data
 @Getter
 @Setter
-public class EnderecoForm {
-
-    @NotNull
-    private Long cpfCnpjUsuario;
+public class EnderecoAtributosForm {
 
     @NotNull
     private boolean enderecoPrincipal;

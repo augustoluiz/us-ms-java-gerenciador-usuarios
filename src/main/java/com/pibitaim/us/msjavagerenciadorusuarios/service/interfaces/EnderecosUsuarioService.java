@@ -2,19 +2,15 @@ package com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces;
 
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.EnderecosUsuario;
 
-import java.util.Optional;
-
 public interface EnderecosUsuarioService {
 
-    Optional<EnderecosUsuario> findEnderecoUsuarioById(Long cpfCnpj, Long codigoCadastroEndereco);
+    Integer qtdEnderecosCodUsuario(String codUsuario);
 
-    Integer qtdEnderecosPorCpfCnpj(Long cpfCnpjUsuario);
+    Integer getUltimoNivelPrioridade(String codUsuario);
 
-    Integer getUltimoNivelPrioridade(Long cpfCnpjUsuario);
+    Boolean existeEnderecosCadastradosParaCodUsuario(String codUsuario);
 
-    Boolean existeEnderecosCadastradosParaCpfCnpj(Long cpfCnpjUsuario);
-
-    void atualizaEnderecosPrincipais(Long cpfCnpjUsuario);
+    void atualizaEnderecosPrincipais(String codUsuario);
 
     EnderecosUsuario save(EnderecosUsuario enderecosUsuario);
 }

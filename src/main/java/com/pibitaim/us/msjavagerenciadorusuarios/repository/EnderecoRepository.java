@@ -15,7 +15,9 @@ public interface EnderecoRepository extends JpaRepository<Endereco, Long> {
     @Query(value = "SELECT * FROM TBUS004_CAD_END_USU END " +
             "INNER JOIN TBUS005_END_USU ENU " +
             "ON (END.COD_CAD_END = ENU.COD_CAD_END) " +
-            "WHERE ENU.CPF_CNPJ = :usuarioCpfCnpj", nativeQuery = true)
+            "INNER JOIN TBUS001_CAD_UNI_USU USU " +
+            "ON (ENU.COD_IDE_USU = USU.COD_IDE_USU) " +
+            "WHERE USU.CPF_CNPJ = :usuarioCpfCnpj", nativeQuery = true)
     Page<Endereco> findByUsuarioId(Pageable paginacao, @Param("usuarioCpfCnpj") Long usuarioCpfCnpj);
 
     @Modifying(clearAutomatically = true)

@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Data
 @Entity(name = "TBUS006_TEL_USU")
@@ -30,6 +31,10 @@ public class TelefonesUsuario {
 
     @Column(name = "TEL_PRI")
     private Boolean telefonePrincipal;
+
+    @NotNull
+    @Column(name = "DAT_ULT_ATU")
+    private Date dataUltimaAtualizacao;
 
     @Override
     public String toString() {

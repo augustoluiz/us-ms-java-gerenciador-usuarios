@@ -12,28 +12,32 @@ import java.util.Optional;
 
 public interface EnderecosUsuarioRepository extends JpaRepository<EnderecosUsuario, EnderecosUsuarioId> {
 
-    @Query(value = "SELECT * FROM TBUS005_END_USU " +
-            "WHERE CPF_CNPJ = :cpfCnpj" +
-            "  AND COD_CAD_END = :codigoCadastroEndereco", nativeQuery = true)
-    Optional<EnderecosUsuario> findEnderecoUsuarioById(@Param("cpfCnpj") Long cpfCnpj, @Param("codigoCadastroEndereco") Long codigoCadastroEndereco);
-
     @Query(value = "SELECT COUNT (*) FROM TBUS005_END_USU " +
-            "WHERE CPF_CNPJ = :cpfCnpjUsuario", nativeQuery = true)
-    Integer qtdEnderecosPorCpfCnpj(@Param("cpfCnpjUsuario") Long cpfCnpjUsuario);
+            "WHERE COD_IDE_USU = :codUsuario", nativeQuery = true)
+    Integer qtdEnderecosPorCodUsuario(@Param("codUsuario") String codUsuario);
 
     @Query(value = "SELECT NIV_PRIO FROM TBUS005_END_USU " +
-            "WHERE CPF_CNPJ = :cpfCnpjUsuario " +
+            "WHERE COD_IDE_USU = :codUsuario " +
             "ORDER BY NIV_PRIO DESC LIMIT 1", nativeQuery = true)
-    Integer getUltimoNivelPrioridade(@Param("cpfCnpjUsuario") Long cpfCnpjUsuario);
+    Integer getUltimoNivelPrioridade(@Param("codUsuario") String codUsuario);
 
     @Query(value = "SELECT * FROM TBUS005_END_USU " +
-            "WHERE CPF_CNPJ = :cpfCnpjUsuario", nativeQuery = true)
-    Optional<List<EnderecosUsuario>> existeEnderecosCadastradosParaCpfCnpj(@Param("cpfCnpjUsuario") Long cpfCnpjUsuario);
+            "WHERE COD_IDE_USU = :codUsuario", nativeQuery = true)
+    Optional<List<EnderecosUsuario>> existeEnderecosCadastradosParaCodigoUsuario(@Param("codUsuario") String codUsuario);
 
     @Modifying(clearAutomatically = true)
     @Query(value = "UPDATE TBUS005_END_USU " +
             "SET END_PRI = FALSE " +
-            "WHERE CPF_CNPJ = :cpfCnpjUsuario " +
+            "WHERE COD_IDE_USU = :codUsuario " +
             "  AND END_PRI = TRUE", nativeQuery = true)
-    void atualizaEnderecosPrincipais(@Param("cpfCnpjUsuario") Long cpfCnpjUsuario);
+    void atualizaEnderecosPrincipais(@Param("codUsuario") String codUsuario);
+
+   /* @Modifying(clearAutomatically = true)
+    @Query(value = "UPDATE TBUS005_END_USU " +
+            "SET END_PRI = :enderecoPrincipal " +
+            "WHERE COD_CAD_END = : " +
+            "  AND ", nativeQuery = true)
+    void atualizaEnderecoPrincipalByCpfCnpjAndCodCadastroEndereco(@Param("cpfCnpjUsuario") Long cpfCnpjUsuario,
+                                                                  @Param("codigoCadastroEndereco") Long codigoCadastroEndereco,
+                                                                  @Param("enderecoPrincipal") boolean enderecoPrincipal);*/
 }

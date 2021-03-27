@@ -1,6 +1,5 @@
 package com.pibitaim.us.msjavagerenciadorusuarios.controller.utils;
 
-import com.pibitaim.us.msjavagerenciadorusuarios.entity.EnderecosUsuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.EnderecoService;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.EnderecosUsuarioService;
 
@@ -10,16 +9,16 @@ public class EnderecoUtils {
         return enderecoService.findById(id).isPresent();
     }
 
-    public static Integer qtdEnderecosPorCpfCnpj(EnderecosUsuarioService enderecosUsuarioService, Long cpfCnpjUsuario){
-        return enderecosUsuarioService.qtdEnderecosPorCpfCnpj(cpfCnpjUsuario);
+    public static Integer qtdEnderecosCodUsuario(EnderecosUsuarioService enderecosUsuarioService, String codUsuario){
+        return enderecosUsuarioService.qtdEnderecosCodUsuario(codUsuario);
     }
 
-    public static Integer getUltimoNivelPrioridade(EnderecosUsuarioService enderecosUsuarioService, Long cpfCnpjUsuario){
-        return enderecosUsuarioService.getUltimoNivelPrioridade(cpfCnpjUsuario);
+    public static Integer getUltimoNivelPrioridade(EnderecosUsuarioService enderecosUsuarioService, String codUsuario){
+        return enderecosUsuarioService.getUltimoNivelPrioridade(codUsuario);
     }
 
-    public static boolean existeEnderecosCadastradosParaCpfCnpj(EnderecosUsuarioService enderecosUsuarioService, Long cpfCnpjUsuario){
-        return enderecosUsuarioService.existeEnderecosCadastradosParaCpfCnpj(cpfCnpjUsuario);
+    public static boolean existeEnderecosCadastradosParaCodUsuario(EnderecosUsuarioService enderecosUsuarioService, String codUsuario){
+        return enderecosUsuarioService.existeEnderecosCadastradosParaCodUsuario(codUsuario);
     }
 
 }
