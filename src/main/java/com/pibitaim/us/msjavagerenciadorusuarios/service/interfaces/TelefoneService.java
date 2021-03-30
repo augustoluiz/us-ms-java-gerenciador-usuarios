@@ -14,4 +14,6 @@ public interface TelefoneService {
 
     Page<Telefone> findByUsuarioId(Pageable paginacao, Long usuarioCpfCnpj);
 
+    Telefone save(Telefone telefone);
+
 }

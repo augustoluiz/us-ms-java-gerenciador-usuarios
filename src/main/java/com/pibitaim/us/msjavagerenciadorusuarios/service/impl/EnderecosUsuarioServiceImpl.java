@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Slf4j
 @Service
 public class EnderecosUsuarioServiceImpl implements EnderecosUsuarioService {
 
@@ -28,7 +27,7 @@ public class EnderecosUsuarioServiceImpl implements EnderecosUsuarioService {
     }
 
     @Override
-    public Boolean existeEnderecosCadastradosParaCodUsuario(String codUsuario) {
+    public boolean existeEnderecosCadastradosParaCodUsuario(String codUsuario) {
         return enderecosUsuarioRepository.existeEnderecosCadastradosParaCodigoUsuario(codUsuario).isPresent();
     }
 

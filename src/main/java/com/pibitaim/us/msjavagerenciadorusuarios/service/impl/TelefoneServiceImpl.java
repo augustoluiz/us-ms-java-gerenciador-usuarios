@@ -30,4 +30,9 @@ public class TelefoneServiceImpl implements TelefoneService {
     public Page<Telefone> findByUsuarioId(Pageable paginacao, Long usuarioCpfCnpj) {
         return telefoneRepository.findByUsuarioId(paginacao, usuarioCpfCnpj);
     }
+
+    @Override
+    public Telefone save(Telefone telefone) {
+        return telefoneRepository.save(telefone);
+    }
 }

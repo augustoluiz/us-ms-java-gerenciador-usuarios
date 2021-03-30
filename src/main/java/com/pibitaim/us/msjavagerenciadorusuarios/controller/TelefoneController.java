@@ -5,10 +5,14 @@ import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.UsuarioUtils;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.TelefoneDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.UsuarioDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.form.TelefoneForm;
+import com.pibitaim.us.msjavagerenciadorusuarios.data.form.TelefonesUsuarioForm;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.TelefoneMapper;
+import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.TelefonesUsuarioMapper;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.UsuarioMapper;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.Telefone;
+import com.pibitaim.us.msjavagerenciadorusuarios.entity.Usuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.TelefoneService;
+import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.TelefonesUsuarioService;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.UsuarioService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +42,13 @@ public class TelefoneController {
     private UsuarioService usuarioService;
 
     @Autowired
+    private TelefonesUsuarioService telefonesUsuarioService;
+
+    @Autowired
     private TelefoneMapper telefoneMapper;
+
+    @Autowired
+    private TelefonesUsuarioMapper telefonesUsuarioMapper;
 
     @Autowired
     private UsuarioMapper usuarioMapper;
@@ -76,8 +86,37 @@ public class TelefoneController {
     @Transactional
     @CacheEvict(value = "listaTelefones", allEntries = true)
     public ResponseEntity<TelefoneDTO> save(@RequestBody @Valid TelefoneForm telefoneForm){
-        //TODO
-        return null;
+        Optional<Usuario> usuario = usuarioService.findByCpfCnpj(telefoneForm.getCpfCnpjUsuario());
+
+        if(!usuario.isPresent()){
+            return ResponseEntity.notFound().build();
+        }
+
+        Telefone telefone = telefoneService.save(telefoneMapper.converteParaEntity(telefoneForm));
+        TelefoneDTO telefoneDTO = telefoneMapper.converteParaDTO(telefone);
+
+        TelefonesUsuarioForm telefonesUsuarioForm = new TelefonesUsuarioForm();
+        telefonesUsuarioForm.setCodigoCadastroTelefone(telefone.getCodigoCadastroTelefone());
+        telefonesUsuarioForm.setCpfCnpjUsuario(telefoneForm.getCpfCnpjUsuario());
+
+        boolean existeTelefonesCadastrados = TelefoneUtils.existeTelefonesCadastradosParaCodUsuario(telefonesUsuarioService, usuario.get().getCodUsuario().toString());
+
+        if(telefoneForm.isTelefonePrincipal() && existeTelefonesCadastrados){
+            telefonesUsuarioService.atualizaTelefonesPrincipais(usuario.get().getCodUsuario().toString());
+        } else if(!existeTelefonesCadastrados && !telefoneForm.isTelefonePrincipal()){
+            telefoneForm.setTelefonePrincipal(true);
+        }
+
+        telefonesUsuarioForm.setTelefonePrincipal(telefoneForm.isTelefonePrincipal());
+
+        Integer nivelPrioridade = TelefoneUtils.qtdTelefonesCodUsuario(telefonesUsuarioService, usuario.get().getCodUsuario().toString()) == 0 ? 1
+                                : TelefoneUtils.getUltimoNivelPrioridade(telefonesUsuarioService, usuario.get().getCodUsuario().toString()) + 1;
+
+        telefonesUsuarioForm.setNivelPrioridade(nivelPrioridade);
+
+        telefonesUsuarioService.save(telefonesUsuarioMapper.converteParaEntity(telefonesUsuarioForm, usuario.get(), telefone));
+
+        return new ResponseEntity<TelefoneDTO>(telefoneDTO, HttpStatus.OK);
     }
 
     @PutMapping("/{cpfCnpjUsuario}/{id}")

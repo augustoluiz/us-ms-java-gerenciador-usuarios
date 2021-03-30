@@ -11,7 +11,10 @@ import lombok.Setter;
 public class TelefonesUsuarioForm {
 
     @NotNull
-    private TelefoneForm telefone;
+    private Long codigoCadastroTelefone;
+
+    @NotNull
+    private Long cpfCnpjUsuario;
 
     @NotNull
     private Integer nivelPrioridade;

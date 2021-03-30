@@ -14,10 +14,10 @@ import java.util.Date;
 public class TelefoneForm {
 
     @NotNull
-    private Long codigoCadastroTelefone;
+    private Long cpfCnpjUsuario;
 
     @NotNull
-    private Date dataUltimaAtualizacao;
+    private boolean telefonePrincipal;
 
     @NotNull
     private Integer telefoneDDD;

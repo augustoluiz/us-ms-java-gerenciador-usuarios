@@ -11,7 +11,7 @@ public interface EnderecosUsuarioService {
 
     Integer getUltimoNivelPrioridade(String codUsuario);
 
-    Boolean existeEnderecosCadastradosParaCodUsuario(String codUsuario);
+    boolean existeEnderecosCadastradosParaCodUsuario(String codUsuario);
 
     void atualizaEnderecosPrincipais(String codUsuario);
 
