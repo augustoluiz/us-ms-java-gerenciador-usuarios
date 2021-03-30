@@ -3,7 +3,10 @@ package com.pibitaim.us.msjavagerenciadorusuarios.controller;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.TelefoneDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.UsuarioDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.form.TelefoneForm;
+import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.TelefoneMapper;
+import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.TelefoneService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -21,11 +24,16 @@ import javax.validation.Valid;
 @RequestMapping(value = "/us-gerenciador-usuarios/telefone")
 public class TelefoneController {
 
+    @Autowired
+    private TelefoneService telefoneService;
+
+    @Autowired
+    private TelefoneMapper telefoneMapper;
+
     @GetMapping
     @Cacheable(value = "listaTelefones")
-    public Page<TelefoneDTO> findAll(@PageableDefault(sort = "cpfCnpj", direction = Sort.Direction.ASC, page = 0, size = 10)Pageable paginacao){
-        //TODO
-        return null;
+    public Page<TelefoneDTO> findAll(@PageableDefault(sort = "telefoneNumero", direction = Sort.Direction.ASC, page = 0, size = 10)Pageable paginacao){
+        return telefoneMapper.converteParaDTO(telefoneService.findAll(paginacao)) ;
     }
 
     @GetMapping("/{id}")
