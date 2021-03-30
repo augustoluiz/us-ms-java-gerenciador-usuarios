@@ -38,7 +38,8 @@ public class EnderecoServiceImpl implements EnderecoService {
     }
 
     @Override
-    public void deleteById(Long id) {
-        enderecoRepository.deleteById(id);
+    public void deleteByCodigoCadastroEndereco(Long codigoCadastroEndereco) {
+        enderecoRepository.deleteByCodigoCadastroEndereco(codigoCadastroEndereco);
     }
+
 }

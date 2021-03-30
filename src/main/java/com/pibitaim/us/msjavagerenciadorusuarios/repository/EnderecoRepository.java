@@ -4,7 +4,6 @@ import com.pibitaim.us.msjavagerenciadorusuarios.entity.Endereco;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -20,10 +19,7 @@ public interface EnderecoRepository extends JpaRepository<Endereco, Long> {
             "WHERE USU.CPF_CNPJ = :usuarioCpfCnpj", nativeQuery = true)
     Page<Endereco> findByUsuarioId(Pageable paginacao, @Param("usuarioCpfCnpj") Long usuarioCpfCnpj);
 
-    @Modifying(clearAutomatically = true)
-    @Query(value = "DELETE * FROM TBUS004_CAD_END_USU " +
-            "WHERE COD_CAD_END = :id", nativeQuery = true)
-    void deleteById(@Param("id") Long id);
+    void deleteByCodigoCadastroEndereco(Long codigoCadastroEndereco);
 
 }
 

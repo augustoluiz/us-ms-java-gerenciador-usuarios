@@ -16,6 +16,6 @@ public interface EnderecoService {
 
     Endereco save(Endereco endereco);
 
-    void deleteById(Long id);
+    void deleteByCodigoCadastroEndereco(Long codigoCadastroEndereco);
 
 }

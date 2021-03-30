@@ -19,4 +19,6 @@ public interface EnderecosUsuarioService {
 
     Optional<List<EnderecosUsuario>> findByEnderecoCodCadastroEndereco(Long codCadastroEndereco);
 
+    Optional<List<EnderecosUsuario>> findCodCadastroEnderecoByCodUsuario(String codUsuario);
+
 }

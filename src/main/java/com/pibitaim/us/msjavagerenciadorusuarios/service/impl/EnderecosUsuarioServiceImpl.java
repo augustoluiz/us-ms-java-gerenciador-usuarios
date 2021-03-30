@@ -46,4 +46,10 @@ public class EnderecosUsuarioServiceImpl implements EnderecosUsuarioService {
     public Optional<List<EnderecosUsuario>> findByEnderecoCodCadastroEndereco(Long codCadastroEndereco) {
         return enderecosUsuarioRepository.findByEnderecoCodCadastroEndereco(codCadastroEndereco);
     }
+
+    @Override
+    public Optional<List<EnderecosUsuario>> findCodCadastroEnderecoByCodUsuario(String codUsuario) {
+        return enderecosUsuarioRepository.findCodCadastroEnderecoByCodUsuario(codUsuario);
+    }
+
 }

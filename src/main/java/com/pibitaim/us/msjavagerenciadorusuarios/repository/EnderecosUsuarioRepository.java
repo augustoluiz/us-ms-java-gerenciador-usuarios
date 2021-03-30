@@ -37,12 +37,8 @@ public interface EnderecosUsuarioRepository extends JpaRepository<EnderecosUsuar
             "WHERE COD_CAD_END = :codCadastroEndereco", nativeQuery = true)
     Optional<List<EnderecosUsuario>> findByEnderecoCodCadastroEndereco(@Param("codCadastroEndereco") Long codCadastroEndereco);
 
-   /* @Modifying(clearAutomatically = true)
-    @Query(value = "UPDATE TBUS005_END_USU " +
-            "SET END_PRI = :enderecoPrincipal " +
-            "WHERE COD_CAD_END = : " +
-            "  AND ", nativeQuery = true)
-    void atualizaEnderecoPrincipalByCpfCnpjAndCodCadastroEndereco(@Param("cpfCnpjUsuario") Long cpfCnpjUsuario,
-                                                                  @Param("codigoCadastroEndereco") Long codigoCadastroEndereco,
-                                                                  @Param("enderecoPrincipal") boolean enderecoPrincipal);*/
+    @Query(value = "SELECT * FROM TBUS005_END_USU " +
+            "WHERE COD_IDE_USU = :codUsuario", nativeQuery = true)
+    Optional<List<EnderecosUsuario>> findCodCadastroEnderecoByCodUsuario(@Param("codUsuario") String codusuario);
+
 }

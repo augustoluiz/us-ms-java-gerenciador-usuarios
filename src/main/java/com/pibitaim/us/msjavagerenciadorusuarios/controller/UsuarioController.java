@@ -1,11 +1,15 @@
 package com.pibitaim.us.msjavagerenciadorusuarios.controller;
 
+import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.EnderecoUtils;
 import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.UsuarioUtils;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.UsuarioDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.form.UsuarioForm;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.form.UsuarioSenhaForm;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.UsuarioMapper;
+import com.pibitaim.us.msjavagerenciadorusuarios.entity.EnderecosUsuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.Usuario;
+import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.EnderecoService;
+import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.EnderecosUsuarioService;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.UsuarioService;
 import com.pibitaim.us.msjavagerenciadorusuarios.utils.EncoderMD5;
 import com.pibitaim.us.msjavagerenciadorusuarios.utils.SenhaInicial;
@@ -24,7 +28,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -33,6 +39,12 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private EnderecosUsuarioService enderecosUsuarioService;
+
+    @Autowired
+    private EnderecoService enderecoService;
 
     @Autowired
     private UsuarioMapper usuarioMapper;
@@ -89,8 +101,12 @@ public class UsuarioController {
     @Transactional
     @CacheEvict(value = "listaUsuarios", allEntries = true)
     public ResponseEntity delete(@PathVariable Long cpfCnpj){
-        if (UsuarioUtils.usuarioExiste(usuarioService, cpfCnpj)){
+        Optional<UUID> codUsuario = UsuarioUtils.findCodUsuarioByCpfCnpj(usuarioService, cpfCnpj);
+        if (codUsuario.isPresent()){
+            Optional<List<EnderecosUsuario>> enderecosUsuarios = EnderecoUtils.findCodCadastroEnderecoByCodUsuario(enderecosUsuarioService, codUsuario.get().toString());
             usuarioService.deleteByCpfCnpj(cpfCnpj);
+            //TODO - fazer o mesmo para os números
+            validaEnderecosSemRelacionamento(enderecosUsuarios);
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
@@ -103,6 +119,18 @@ public class UsuarioController {
         }catch (NoSuchAlgorithmException exception) {
             throw new NoSuchAlgorithmException("Erro de validações internas");
         }
+    }
+
+    private void validaEnderecosSemRelacionamento(Optional<List<EnderecosUsuario>> enderecosUsuarios){
+
+        if(enderecosUsuarios.isPresent()){
+            enderecosUsuarios.get().forEach(endereco -> {
+                if(EnderecoUtils.isEnderecoSemRelacionamento(enderecosUsuarioService, endereco.getEnderecosUsuarioId().getEnderecoId())){
+                    enderecoService.deleteByCodigoCadastroEndereco(endereco.getEnderecosUsuarioId().getEnderecoId());
+                }
+            });
+        }
+
     }
 
 }

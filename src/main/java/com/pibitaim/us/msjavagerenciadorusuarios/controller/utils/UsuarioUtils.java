@@ -1,7 +1,10 @@
 package com.pibitaim.us.msjavagerenciadorusuarios.controller.utils;
 
+import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.EnderecoService;
+import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.EnderecosUsuarioService;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.UsuarioService;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 

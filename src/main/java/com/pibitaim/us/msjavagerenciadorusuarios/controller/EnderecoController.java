@@ -33,7 +33,6 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -144,8 +143,11 @@ public class EnderecoController {
     @Transactional
     @CacheEvict(value = "listaEnderecos", allEntries = true)
     public ResponseEntity delete(@PathVariable Long id){
-        //TODO - quando deletear, deve excluir da tabela que relaciona com usuarios tbm
-        return null;
+        if(EnderecoUtils.enderecoExiste(enderecoService, id)){
+            enderecoService.deleteByCodigoCadastroEndereco(id);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 
     private boolean usuarioContemEndereco(Optional<UUID> codUsuario, Optional<List<EnderecosUsuario>> listEnderecosUsuario){
