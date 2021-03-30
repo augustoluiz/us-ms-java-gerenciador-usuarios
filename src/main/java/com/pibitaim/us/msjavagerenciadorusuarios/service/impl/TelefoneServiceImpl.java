@@ -25,4 +25,9 @@ public class TelefoneServiceImpl implements TelefoneService {
     public Optional<Telefone> findById(Long id) {
         return telefoneRepository.findById(id);
     }
+
+    @Override
+    public Page<Telefone> findByUsuarioId(Pageable paginacao, Long usuarioCpfCnpj) {
+        return telefoneRepository.findByUsuarioId(paginacao, usuarioCpfCnpj);
+    }
 }

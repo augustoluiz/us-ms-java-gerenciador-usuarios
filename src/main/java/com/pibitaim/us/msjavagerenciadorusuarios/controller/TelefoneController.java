@@ -1,11 +1,13 @@
 package com.pibitaim.us.msjavagerenciadorusuarios.controller;
 
+import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.UsuarioUtils;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.TelefoneDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.UsuarioDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.form.TelefoneForm;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.TelefoneMapper;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.Telefone;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.TelefoneService;
+import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.UsuarioService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -31,6 +33,9 @@ public class TelefoneController {
     private TelefoneService telefoneService;
 
     @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
     private TelefoneMapper telefoneMapper;
 
     @GetMapping
@@ -46,12 +51,15 @@ public class TelefoneController {
     }
 
     @GetMapping("/telefonesUsuario/{usuarioCpfCnpj}")
-    public ResponseEntity<TelefoneDTO> findByUsuarioId(@PathVariable Long usuarioCpfCnpj, @PageableDefault(sort = "TEL_NUM", direction = Sort.Direction.ASC, page = 0, size = 10) Pageable paginacao){
-        //TODO
-        return null;
+    public ResponseEntity<Page<TelefoneDTO>> findByUsuarioId(@PathVariable Long usuarioCpfCnpj, @PageableDefault(sort = "TEL_NUM", direction = Sort.Direction.ASC, page = 0, size = 10) Pageable paginacao){
+        if(!UsuarioUtils.usuarioExiste(usuarioService, usuarioCpfCnpj)){
+            return ResponseEntity.notFound().build();
+        }
+        telefoneService.findByUsuarioId(paginacao, usuarioCpfCnpj);
+        return new ResponseEntity<Page<TelefoneDTO>>(telefoneMapper.converteParaDTO(telefoneService.findByUsuarioId(paginacao, usuarioCpfCnpj)), HttpStatus.OK);
     }
 
-    @GetMapping("/telefonesUsuario/{telefoneId}")
+    @GetMapping("/usuariosTelefone/{telefoneId}")
     public ResponseEntity<Page<UsuarioDTO>> findUsuariosByTelefoneId(@PathVariable Long telefoneId, @PageableDefault(sort = "CPF_CNPJ", direction = Sort.Direction.ASC, page = 0, size = 10) Pageable paginacao){
         //TODO
         return null;

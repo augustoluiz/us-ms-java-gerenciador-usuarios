@@ -12,4 +12,6 @@ public interface TelefoneService {
 
     Optional<Telefone> findById(Long id);
 
+    Page<Telefone> findByUsuarioId(Pageable paginacao, Long usuarioCpfCnpj);
+
 }
