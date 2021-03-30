@@ -79,4 +79,9 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarioRepository.findByEnderecoId(paginacao, enderecoId);
     }
 
+    @Override
+    public Page<Usuario> findByTelefoneId(Pageable paginacao, Long telefoneId) {
+        return usuarioRepository.findByTelefoneId(paginacao, telefoneId);
+    }
+
 }

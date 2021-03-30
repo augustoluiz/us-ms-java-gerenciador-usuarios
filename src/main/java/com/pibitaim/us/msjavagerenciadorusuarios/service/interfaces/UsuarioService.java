@@ -29,4 +29,6 @@ public interface UsuarioService {
 
     Page<Usuario> findByEnderecoId(Pageable paginacao, Long enderecoId);
 
+    Page<Usuario> findByTelefoneId(Pageable paginacao, Long telefoneId);
+
 }

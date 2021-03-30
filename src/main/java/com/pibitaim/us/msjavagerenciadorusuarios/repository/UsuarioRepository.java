@@ -69,4 +69,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
             "WHERE END.COD_CAD_END = :enderecoId", nativeQuery = true)
     Page<Usuario> findByEnderecoId(Pageable paginacao, @Param("enderecoId") Long enderecoId);
 
+    @Query(value = "SELECT * FROM TBUS001_CAD_UNI_USU USU " +
+            "INNER JOIN TBUS006_TEL_USU TEL " +
+            "ON (USU.COD_IDE_USU = TEL.COD_IDE_USU) " +
+            "WHERE TEL.COD_CAD_TEL = :telefoneId", nativeQuery = true)
+    Page<Usuario> findByTelefoneId(Pageable paginacao, @Param("telefoneId") Long telefoneId);
+
 }

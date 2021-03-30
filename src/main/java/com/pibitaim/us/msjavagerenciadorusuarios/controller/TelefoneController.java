@@ -1,10 +1,12 @@
 package com.pibitaim.us.msjavagerenciadorusuarios.controller;
 
+import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.TelefoneUtils;
 import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.UsuarioUtils;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.TelefoneDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.UsuarioDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.form.TelefoneForm;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.TelefoneMapper;
+import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.UsuarioMapper;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.Telefone;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.TelefoneService;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.UsuarioService;
@@ -38,6 +40,9 @@ public class TelefoneController {
     @Autowired
     private TelefoneMapper telefoneMapper;
 
+    @Autowired
+    private UsuarioMapper usuarioMapper;
+
     @GetMapping
     @Cacheable(value = "listaTelefones")
     public Page<TelefoneDTO> findAll(@PageableDefault(sort = "telefoneNumero", direction = Sort.Direction.ASC, page = 0, size = 10)Pageable paginacao){
@@ -61,8 +66,10 @@ public class TelefoneController {
 
     @GetMapping("/usuariosTelefone/{telefoneId}")
     public ResponseEntity<Page<UsuarioDTO>> findUsuariosByTelefoneId(@PathVariable Long telefoneId, @PageableDefault(sort = "CPF_CNPJ", direction = Sort.Direction.ASC, page = 0, size = 10) Pageable paginacao){
-        //TODO
-        return null;
+        if(!TelefoneUtils.telefoneExiste(telefoneService, telefoneId)){
+            return ResponseEntity.notFound().build();
+        }
+        return new ResponseEntity<Page<UsuarioDTO>>(usuarioMapper.converteParaDTO(usuarioService.findByTelefoneId(paginacao, telefoneId)), HttpStatus.OK);
     }
 
     @PostMapping
