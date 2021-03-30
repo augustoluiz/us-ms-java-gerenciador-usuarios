@@ -56,7 +56,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/{cpfCnpj}")
-    public ResponseEntity<UsuarioDTO> findById(@PathVariable Long cpfCnpj){
+    public ResponseEntity<UsuarioDTO> findByCpfCnpj(@PathVariable Long cpfCnpj){
         Optional<Usuario> usuario = usuarioService.findByCpfCnpj(cpfCnpj);
         if (usuario.isPresent()){
             return ResponseEntity.ok(usuarioMapper.converteParaDTO(usuario.get()));
