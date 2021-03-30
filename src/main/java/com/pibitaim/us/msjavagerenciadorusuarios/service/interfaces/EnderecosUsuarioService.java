@@ -2,6 +2,9 @@ package com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces;
 
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.EnderecosUsuario;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface EnderecosUsuarioService {
 
     Integer qtdEnderecosCodUsuario(String codUsuario);
@@ -13,4 +16,7 @@ public interface EnderecosUsuarioService {
     void atualizaEnderecosPrincipais(String codUsuario);
 
     EnderecosUsuario save(EnderecosUsuario enderecosUsuario);
+
+    Optional<List<EnderecosUsuario>> findByEnderecoCodCadastroEndereco(Long codCadastroEndereco);
+
 }

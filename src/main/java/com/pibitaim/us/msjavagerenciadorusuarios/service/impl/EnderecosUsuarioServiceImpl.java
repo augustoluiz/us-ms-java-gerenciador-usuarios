@@ -7,6 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Slf4j
 @Service
 public class EnderecosUsuarioServiceImpl implements EnderecosUsuarioService {
@@ -37,5 +40,10 @@ public class EnderecosUsuarioServiceImpl implements EnderecosUsuarioService {
     @Override
     public EnderecosUsuario save(EnderecosUsuario enderecosUsuario) {
         return enderecosUsuarioRepository.save(enderecosUsuario);
+    }
+
+    @Override
+    public Optional<List<EnderecosUsuario>> findByEnderecoCodCadastroEndereco(Long codCadastroEndereco) {
+        return enderecosUsuarioRepository.findByEnderecoCodCadastroEndereco(codCadastroEndereco);
     }
 }

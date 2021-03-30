@@ -11,6 +11,7 @@ import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.EnderecoMapper;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.EnderecosUsuarioMapper;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.UsuarioMapper;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.Endereco;
+import com.pibitaim.us.msjavagerenciadorusuarios.entity.EnderecosUsuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.Usuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.EnderecoService;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.EnderecosUsuarioService;
@@ -29,7 +30,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -119,15 +123,20 @@ public class EnderecoController {
         return new ResponseEntity<EnderecoDTO>(enderecoDTO, HttpStatus.OK);
     }
 
-    @PutMapping("/{cpfCnpj}/{id}")
+    @PutMapping("/{cpfCnpjUsuario}/{id}")
     @Transactional
     @CacheEvict(value = "listaEnderecos", allEntries = true)
     public ResponseEntity<EnderecoDTO> update(@PathVariable Long cpfCnpjUsuario, @PathVariable Long id, @RequestBody @Valid EnderecoAtributosForm enderecoAtributosForm){
-        //TODO - altera só as intormacoes do endereco, a cardinalidade com os usuarios não
-        if(!EnderecoUtils.enderecoExiste(enderecoService, id)){
+        Optional<List<EnderecosUsuario>> listEnderecosUsuario = enderecosUsuarioService.findByEnderecoCodCadastroEndereco(id);
+        Optional<UUID> codUsuario = UsuarioUtils.findCodUsuarioByCpfCnpj(usuarioService, cpfCnpjUsuario);
+
+        if(!EnderecoUtils.enderecoExiste(enderecoService, id) || !UsuarioUtils.usuarioExiste(usuarioService, cpfCnpjUsuario) || !usuarioContemEndereco(codUsuario, listEnderecosUsuario)){
             return ResponseEntity.notFound().build();
         }
-        return new ResponseEntity<EnderecoDTO>(enderecoMapper.converteParaDTO(enderecoService.save(enderecoService.save(enderecoMapper.converteParaEntity(enderecoAtributosForm, id)))), HttpStatus.CREATED);
+
+        List<EnderecosUsuario> enderecosUsuarios = atualizaEnderecosUsuarioParaCpfCnpj(codUsuario.get(), id, listEnderecosUsuario.get(), enderecoAtributosForm.isEnderecoPrincipal());
+
+        return new ResponseEntity<EnderecoDTO>(enderecoMapper.converteParaDTO(enderecoService.save(enderecoService.save(enderecoMapper.converteParaEntity(enderecoAtributosForm, id, enderecosUsuarios)))), HttpStatus.CREATED);
 
     }
 
@@ -137,6 +146,26 @@ public class EnderecoController {
     public ResponseEntity delete(@PathVariable Long id){
         //TODO - quando deletear, deve excluir da tabela que relaciona com usuarios tbm
         return null;
+    }
+
+    private boolean usuarioContemEndereco(Optional<UUID> codUsuario, Optional<List<EnderecosUsuario>> listEnderecosUsuario){
+        if(!codUsuario.isPresent() || !listEnderecosUsuario.isPresent()){
+            return false;
+        }
+        return listEnderecosUsuario.get().stream().filter(enderecoUsuario -> enderecoUsuario.getEnderecosUsuarioId().getUsuarioId().compareTo(codUsuario.get()) == 0).count() > 0 ? true : false;
+    }
+
+    private List<EnderecosUsuario> atualizaEnderecosUsuarioParaCpfCnpj(UUID codUsuario, Long enderecoId, List<EnderecosUsuario> listEnderecosUsuario, boolean endereoPrincipal){
+        if(endereoPrincipal == true){
+            enderecosUsuarioService.atualizaEnderecosPrincipais(codUsuario.toString());
+        }
+
+        listEnderecosUsuario.forEach(enderecosUsuario -> {
+            if(enderecosUsuario.getEnderecosUsuarioId().getUsuarioId().compareTo(codUsuario) == 0 && enderecosUsuario.getEnderecosUsuarioId().getEnderecoId() == enderecoId){
+                enderecosUsuario.setEnderecoPrincipal(endereoPrincipal);
+            }
+        });
+        return listEnderecosUsuario;
     }
 
 }

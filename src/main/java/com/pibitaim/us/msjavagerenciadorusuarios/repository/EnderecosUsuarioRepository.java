@@ -32,6 +32,11 @@ public interface EnderecosUsuarioRepository extends JpaRepository<EnderecosUsuar
             "  AND END_PRI = TRUE", nativeQuery = true)
     void atualizaEnderecosPrincipais(@Param("codUsuario") String codUsuario);
 
+
+    @Query(value = "SELECT * FROM TBUS005_END_USU " +
+            "WHERE COD_CAD_END = :codCadastroEndereco", nativeQuery = true)
+    Optional<List<EnderecosUsuario>> findByEnderecoCodCadastroEndereco(@Param("codCadastroEndereco") Long codCadastroEndereco);
+
    /* @Modifying(clearAutomatically = true)
     @Query(value = "UPDATE TBUS005_END_USU " +
             "SET END_PRI = :enderecoPrincipal " +
