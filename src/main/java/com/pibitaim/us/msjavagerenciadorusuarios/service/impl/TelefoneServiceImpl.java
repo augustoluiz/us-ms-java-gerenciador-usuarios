@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class TelefoneServiceImpl implements TelefoneService {
 
@@ -17,5 +19,10 @@ public class TelefoneServiceImpl implements TelefoneService {
     @Override
     public Page<Telefone> findAll(Pageable paginacao) {
         return telefoneRepository.findAll(paginacao);
+    }
+
+    @Override
+    public Optional<Telefone> findById(Long id) {
+        return telefoneRepository.findById(id);
     }
 }

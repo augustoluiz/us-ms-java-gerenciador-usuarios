@@ -4,6 +4,7 @@ import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.TelefoneDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.UsuarioDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.form.TelefoneForm;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.TelefoneMapper;
+import com.pibitaim.us.msjavagerenciadorusuarios.entity.Telefone;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.TelefoneService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +14,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -38,8 +41,8 @@ public class TelefoneController {
 
     @GetMapping("/{id}")
     public ResponseEntity<TelefoneDTO> findById(@PathVariable Long id){
-        //TODO
-        return null;
+        Optional<Telefone> telefone = telefoneService.findById(id);
+        return telefone.isPresent() ? new ResponseEntity<TelefoneDTO>(telefoneMapper.converteParaDTO(telefone.get()), HttpStatus.OK) : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/telefonesUsuario/{usuarioCpfCnpj}")
