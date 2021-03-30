@@ -123,7 +123,7 @@ public class TelefoneController {
     @Transactional
     @CacheEvict(value = "listaTelefones", allEntries = true)
     public ResponseEntity<TelefoneDTO> update(@PathVariable Long cpfCnpjUsuario, @PathVariable Long id, @RequestBody @Valid TelefoneForm telefoneForm){
-        //TODO
+        //TODO - fazer mesmas validações do endereco
         return null;
     }
 
