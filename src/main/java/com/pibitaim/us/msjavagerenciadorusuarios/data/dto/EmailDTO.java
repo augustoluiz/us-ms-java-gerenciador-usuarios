@@ -12,5 +12,5 @@ public class EmailDTO {
     private String email;
     private boolean emailLogin;
     private Integer nivelPrivilegio;
-
+    private Long cpfCnpjUsuario;
 }
