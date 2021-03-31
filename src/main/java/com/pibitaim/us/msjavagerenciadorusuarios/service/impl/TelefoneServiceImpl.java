@@ -35,4 +35,9 @@ public class TelefoneServiceImpl implements TelefoneService {
     public Telefone save(Telefone telefone) {
         return telefoneRepository.save(telefone);
     }
+
+    @Override
+    public void deleteByCodigoCadastroTelefone(Long codigoCadastroTelefone) {
+        telefoneRepository.deleteByCodigoCadastroTelefone(codigoCadastroTelefone);
+    }
 }

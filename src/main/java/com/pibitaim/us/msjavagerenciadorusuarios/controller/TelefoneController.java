@@ -139,12 +139,21 @@ public class TelefoneController {
         return new ResponseEntity<TelefoneDTO>(telefoneMapper.converteParaDTO(telefoneService.save(telefoneMapper.converteParaEntity(telefoneForm, id, telefonesUsuarios))), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{cpfCnpjUsuario}/{id}")
     @Transactional
     @CacheEvict(value = "listaTelefones", allEntries = true)
-    public ResponseEntity delete(@PathVariable Long id){
-        //TODO
-        return null;
+    public ResponseEntity delete(@PathVariable Long cpfCnpjUsuario, @PathVariable Long id){
+
+        Optional<List<TelefonesUsuario>> listTelefonesUsuario = telefonesUsuarioService.findByTelefoneCodCadastroTelefone(id);
+        Optional<UUID> codUsuario = UsuarioUtils.findCodUsuarioByCpfCnpj(usuarioService, cpfCnpjUsuario);
+
+        if(!TelefoneUtils.telefoneExiste(telefoneService, id) || !UsuarioUtils.usuarioExiste(usuarioService, cpfCnpjUsuario) || !usuarioContemTelefone(codUsuario, listTelefonesUsuario)){
+            return ResponseEntity.notFound().build();
+        }
+
+        telefoneService.deleteByCodigoCadastroTelefone(id);
+        return ResponseEntity.ok().build();
+
     }
 
     private boolean usuarioContemTelefone(Optional<UUID> codUsuario, Optional<List<TelefonesUsuario>> listTelefonesUsuario){

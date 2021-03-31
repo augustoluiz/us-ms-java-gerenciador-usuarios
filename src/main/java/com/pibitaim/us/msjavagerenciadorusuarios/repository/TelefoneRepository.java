@@ -17,4 +17,5 @@ public interface TelefoneRepository extends JpaRepository<Telefone, Long> {
             "WHERE USU.CPF_CNPJ = :usuarioCpfCnpj", nativeQuery = true)
     Page<Telefone> findByUsuarioId(Pageable paginacao, @Param("usuarioCpfCnpj") Long usuarioCpfCnpj);
 
+    void deleteByCodigoCadastroTelefone(Long codigoCadastroTelefone);
 }

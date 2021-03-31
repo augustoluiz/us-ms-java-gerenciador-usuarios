@@ -139,15 +139,21 @@ public class EnderecoController {
 
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{cpfCnpjUsuario}/{id}")
     @Transactional
     @CacheEvict(value = "listaEnderecos", allEntries = true)
-    public ResponseEntity delete(@PathVariable Long id){
-        if(EnderecoUtils.enderecoExiste(enderecoService, id)){
-            enderecoService.deleteByCodigoCadastroEndereco(id);
-            return ResponseEntity.ok().build();
+    public ResponseEntity delete(@PathVariable Long cpfCnpjUsuario, @PathVariable Long id){
+
+        Optional<List<EnderecosUsuario>> listEnderecosUsuario = enderecosUsuarioService.findByEnderecoCodCadastroEndereco(id);
+        Optional<UUID> codUsuario = UsuarioUtils.findCodUsuarioByCpfCnpj(usuarioService, cpfCnpjUsuario);
+
+        if(!EnderecoUtils.enderecoExiste(enderecoService, id) || !UsuarioUtils.usuarioExiste(usuarioService, cpfCnpjUsuario) || !usuarioContemEndereco(codUsuario, listEnderecosUsuario)){
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
+
+        enderecoService.deleteByCodigoCadastroEndereco(id);
+        return ResponseEntity.ok().build();
+
     }
 
     private boolean usuarioContemEndereco(Optional<UUID> codUsuario, Optional<List<EnderecosUsuario>> listEnderecosUsuario){

@@ -16,4 +16,5 @@ public interface TelefoneService {
 
     Telefone save(Telefone telefone);
 
+    void deleteByCodigoCadastroTelefone(Long codigoCadastroTelefone);
 }
