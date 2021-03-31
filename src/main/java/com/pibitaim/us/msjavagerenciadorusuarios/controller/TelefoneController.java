@@ -9,7 +9,9 @@ import com.pibitaim.us.msjavagerenciadorusuarios.data.form.TelefonesUsuarioForm;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.TelefoneMapper;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.TelefonesUsuarioMapper;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.UsuarioMapper;
+import com.pibitaim.us.msjavagerenciadorusuarios.entity.EnderecosUsuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.Telefone;
+import com.pibitaim.us.msjavagerenciadorusuarios.entity.TelefonesUsuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.Usuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.TelefoneService;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.TelefonesUsuarioService;
@@ -28,7 +30,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -123,8 +127,16 @@ public class TelefoneController {
     @Transactional
     @CacheEvict(value = "listaTelefones", allEntries = true)
     public ResponseEntity<TelefoneDTO> update(@PathVariable Long cpfCnpjUsuario, @PathVariable Long id, @RequestBody @Valid TelefoneForm telefoneForm){
-        //TODO - fazer mesmas validações do endereco
-        return null;
+        Optional<List<TelefonesUsuario>> listTelefonesUsuario = telefonesUsuarioService.findByTelefoneCodCadastroTelefone(id);
+        Optional<UUID> codUsuario = UsuarioUtils.findCodUsuarioByCpfCnpj(usuarioService, cpfCnpjUsuario);
+
+        if(!TelefoneUtils.telefoneExiste(telefoneService, id) || !UsuarioUtils.usuarioExiste(usuarioService, cpfCnpjUsuario) || !usuarioContemTelefone(codUsuario, listTelefonesUsuario)){
+            return ResponseEntity.notFound().build();
+        }
+
+        List<TelefonesUsuario> telefonesUsuarios = atualizaTelefonesUsuarioParaCpfCnpj(codUsuario.get(), id, listTelefonesUsuario.get(), telefoneForm.isTelefonePrincipal());
+
+        return new ResponseEntity<TelefoneDTO>(telefoneMapper.converteParaDTO(telefoneService.save(telefoneMapper.converteParaEntity(telefoneForm, id, telefonesUsuarios))), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
@@ -133,6 +145,26 @@ public class TelefoneController {
     public ResponseEntity delete(@PathVariable Long id){
         //TODO
         return null;
+    }
+
+    private boolean usuarioContemTelefone(Optional<UUID> codUsuario, Optional<List<TelefonesUsuario>> listTelefonesUsuario){
+        if(!codUsuario.isPresent() || !listTelefonesUsuario.isPresent()){
+            return false;
+        }
+        return listTelefonesUsuario.get().stream().filter(telefonesUsuario -> telefonesUsuario.getTelefonesUsuarioId().getUsuarioId().compareTo(codUsuario.get()) == 0).count() > 0 ? true : false;
+    }
+
+    private List<TelefonesUsuario> atualizaTelefonesUsuarioParaCpfCnpj(UUID codUsuario, Long telefoneId, List<TelefonesUsuario> listTelefonesUsuario, boolean telefonePrincipal){
+        if(telefonePrincipal == true){
+            telefonesUsuarioService.atualizaTelefonesPrincipais(codUsuario.toString());
+        }
+
+        listTelefonesUsuario.forEach(telefonesUsuario -> {
+            if(telefonesUsuario.getTelefonesUsuarioId().getUsuarioId().compareTo(codUsuario) == 0 && telefonesUsuario.getTelefonesUsuarioId().getTelefoneId() == telefoneId){
+                telefonesUsuario.setTelefonePrincipal(telefonePrincipal);
+            }
+        });
+        return listTelefonesUsuario;
     }
 
 }

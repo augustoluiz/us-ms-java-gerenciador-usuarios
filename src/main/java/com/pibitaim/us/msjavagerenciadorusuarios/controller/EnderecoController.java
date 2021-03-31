@@ -135,7 +135,7 @@ public class EnderecoController {
 
         List<EnderecosUsuario> enderecosUsuarios = atualizaEnderecosUsuarioParaCpfCnpj(codUsuario.get(), id, listEnderecosUsuario.get(), enderecoAtributosForm.isEnderecoPrincipal());
 
-        return new ResponseEntity<EnderecoDTO>(enderecoMapper.converteParaDTO(enderecoService.save(enderecoService.save(enderecoMapper.converteParaEntity(enderecoAtributosForm, id, enderecosUsuarios)))), HttpStatus.CREATED);
+        return new ResponseEntity<EnderecoDTO>(enderecoMapper.converteParaDTO(enderecoService.save(enderecoMapper.converteParaEntity(enderecoAtributosForm, id, enderecosUsuarios))), HttpStatus.CREATED);
 
     }
 

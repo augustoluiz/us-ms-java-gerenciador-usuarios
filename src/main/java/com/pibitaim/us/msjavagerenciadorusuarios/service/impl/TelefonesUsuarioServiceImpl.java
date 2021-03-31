@@ -6,6 +6,9 @@ import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.TelefonesUsu
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class TelefonesUsuarioServiceImpl implements TelefonesUsuarioService {
 
@@ -35,5 +38,10 @@ public class TelefonesUsuarioServiceImpl implements TelefonesUsuarioService {
     @Override
     public TelefonesUsuario save(TelefonesUsuario telefonesUsuario) {
         return telefonesUsuarioRepository.save(telefonesUsuario);
+    }
+
+    @Override
+    public Optional<List<TelefonesUsuario>> findByTelefoneCodCadastroTelefone(Long id) {
+        return telefonesUsuarioRepository.findByTelefoneCodCadastroTelefone(id);
     }
 }
