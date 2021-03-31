@@ -3,7 +3,6 @@ package com.pibitaim.us.msjavagerenciadorusuarios.service.impl;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.EnderecosUsuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.repository.EnderecosUsuarioRepository;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.EnderecosUsuarioService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

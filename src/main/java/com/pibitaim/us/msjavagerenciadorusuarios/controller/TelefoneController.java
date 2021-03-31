@@ -9,7 +9,6 @@ import com.pibitaim.us.msjavagerenciadorusuarios.data.form.TelefonesUsuarioForm;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.TelefoneMapper;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.TelefonesUsuarioMapper;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.UsuarioMapper;
-import com.pibitaim.us.msjavagerenciadorusuarios.entity.EnderecosUsuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.Telefone;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.TelefonesUsuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.Usuario;
