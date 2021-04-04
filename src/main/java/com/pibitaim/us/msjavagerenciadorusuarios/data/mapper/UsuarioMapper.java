@@ -28,6 +28,7 @@ public class UsuarioMapper implements MapperDTO<Usuario, UsuarioDTO>, MapperUsua
         return mapper.typeMap(UsuarioForm.class, Usuario.class).addMappings(mapper -> {
             mapper.map(src -> senhaInicial, Usuario::setSenhaAcessoUsuario);
             mapper.map(src -> new Date(), Usuario::setDataUltimaAtualizacao);
+            mapper.map(src -> usuarioForm.getEmailUsuario().toLowerCase(), Usuario::setEmailUsuario);
         }).map(usuarioForm);
     }
 

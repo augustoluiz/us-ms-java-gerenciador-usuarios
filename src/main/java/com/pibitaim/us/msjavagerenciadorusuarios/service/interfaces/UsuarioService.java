@@ -19,6 +19,10 @@ public interface UsuarioService {
 
     Optional<Usuario> findByCpfCnpj(Long cpfCnpj);
 
+    Integer qtdEmailCadastrado(String emailUsuario);
+
+    Integer qtdEmailCadastradoOutrosUsuarios(String emailUsuario, Long cpfCnpj);
+
     void update(UsuarioForm usuarioForm, Long cpfCnpjOriginal);
 
     void deleteByCpfCnpj(Long cpfCnpj);

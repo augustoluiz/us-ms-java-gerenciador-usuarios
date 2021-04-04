@@ -17,6 +17,7 @@ public class UsuarioDTO {
 
     private Long cpfCnpj;
     private String nomeUsuario;
+    private String emailUsuario;
     private EnumTipoPessoa enumTipoPessoa;
     private EnumSexoUsuario enumSexoUsuario;
     private LocalDate dataNascimento;
@@ -24,7 +25,6 @@ public class UsuarioDTO {
     private Boolean indicadorMembresia;
     private LocalDate dataBatismo;
     private Date dataUltimaAtualizacao;
-    private List<EmailDTO> emailsUsuario;
     private List<EnderecosUsuarioDTO> enderecosUsuario;
     private List<TelefonesUsuarioDTO> telefonesUsuario;
 

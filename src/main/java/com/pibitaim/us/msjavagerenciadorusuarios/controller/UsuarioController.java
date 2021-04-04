@@ -1,16 +1,16 @@
 package com.pibitaim.us.msjavagerenciadorusuarios.controller;
 
 import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.EnderecoUtils;
+import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.TelefoneUtils;
 import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.UsuarioUtils;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.UsuarioDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.form.UsuarioForm;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.form.UsuarioSenhaForm;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.UsuarioMapper;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.EnderecosUsuario;
+import com.pibitaim.us.msjavagerenciadorusuarios.entity.TelefonesUsuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.Usuario;
-import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.EnderecoService;
-import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.EnderecosUsuarioService;
-import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.UsuarioService;
+import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.*;
 import com.pibitaim.us.msjavagerenciadorusuarios.utils.EncoderMD5;
 import com.pibitaim.us.msjavagerenciadorusuarios.utils.SenhaInicial;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +44,13 @@ public class UsuarioController {
     private EnderecosUsuarioService enderecosUsuarioService;
 
     @Autowired
+    private TelefonesUsuarioService telefonesUsuarioService;
+
+    @Autowired
     private EnderecoService enderecoService;
+
+    @Autowired
+    private TelefoneService telefoneService;
 
     @Autowired
     private UsuarioMapper usuarioMapper;
@@ -68,7 +74,7 @@ public class UsuarioController {
     @Transactional
     @CacheEvict(value = "listaUsuarios", allEntries = true)
     public ResponseEntity<UsuarioDTO> save(@RequestBody @Valid UsuarioForm usuarioForm) throws NoSuchAlgorithmException {
-        if(UsuarioUtils.usuarioExiste(usuarioService, usuarioForm.getCpfCnpj())){
+        if(UsuarioUtils.usuarioExiste(usuarioService, usuarioForm.getCpfCnpj()) || UsuarioUtils.emailCadastrado(usuarioService, usuarioForm.getEmailUsuario())){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         String senhaInicial = new SenhaInicial().geraSenhaInicial();
@@ -79,11 +85,14 @@ public class UsuarioController {
     @Transactional
     @CacheEvict(value = "listaUsuarios", allEntries = true)
     public ResponseEntity<UsuarioDTO> update(@PathVariable Long cpfCnpj, @RequestBody @Valid UsuarioForm usuarioForm){
-        if (UsuarioUtils.usuarioExiste(usuarioService, cpfCnpj)){
-            usuarioService.update(usuarioForm, cpfCnpj);
-            return new ResponseEntity<UsuarioDTO>(usuarioMapper.converteParaDTO(usuarioService.findByCpfCnpj(usuarioForm.getCpfCnpj()).get()), HttpStatus.OK);
+        if(!UsuarioUtils.usuarioExiste(usuarioService, cpfCnpj)){
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
+        if(UsuarioUtils.emailCadastradoOutrosUsuarios(usuarioService, usuarioForm.getEmailUsuario(), cpfCnpj) || (usuarioForm.getCpfCnpj().compareTo(cpfCnpj) != 0 && UsuarioUtils.usuarioExiste(usuarioService, usuarioForm.getCpfCnpj()))){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        usuarioService.update(usuarioForm, cpfCnpj);
+        return new ResponseEntity<UsuarioDTO>(usuarioMapper.converteParaDTO(usuarioService.findByCpfCnpj(usuarioForm.getCpfCnpj()).get()), HttpStatus.OK);
     }
 
     @PatchMapping("/alteraSenha/{cpfCnpj}")
@@ -104,9 +113,10 @@ public class UsuarioController {
         Optional<UUID> codUsuario = UsuarioUtils.findCodUsuarioByCpfCnpj(usuarioService, cpfCnpj);
         if (codUsuario.isPresent()){
             Optional<List<EnderecosUsuario>> enderecosUsuarios = EnderecoUtils.findCodCadastroEnderecoByCodUsuario(enderecosUsuarioService, codUsuario.get().toString());
+            Optional<List<TelefonesUsuario>> telefonesUsuarios = TelefoneUtils.findCodCadastroTelefoneByCodUsuario(telefonesUsuarioService, codUsuario.get().toString());
             usuarioService.deleteByCpfCnpj(cpfCnpj);
-            //TODO - fazer o mesmo para os números
             validaEnderecosSemRelacionamento(enderecosUsuarios);
+            validaTelefonesSemRelacionamento(telefonesUsuarios);
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
@@ -127,6 +137,18 @@ public class UsuarioController {
             enderecosUsuarios.get().forEach(endereco -> {
                 if(EnderecoUtils.isEnderecoSemRelacionamento(enderecosUsuarioService, endereco.getEnderecosUsuarioId().getEnderecoId())){
                     enderecoService.deleteByCodigoCadastroEndereco(endereco.getEnderecosUsuarioId().getEnderecoId());
+                }
+            });
+        }
+
+    }
+
+    private void validaTelefonesSemRelacionamento(Optional<List<TelefonesUsuario>> telefonesUsuarios){
+
+        if(telefonesUsuarios.isPresent()){
+            telefonesUsuarios.get().forEach(telefone -> {
+                if(TelefoneUtils.isTelefoneSemRelacionamento(telefonesUsuarioService, telefone.getTelefonesUsuarioId().getTelefoneId())){
+                    telefoneService.deleteByCodigoCadastroTelefone(telefone.getTelefonesUsuarioId().getTelefoneId());
                 }
             });
         }

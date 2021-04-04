@@ -3,13 +3,13 @@ package com.pibitaim.us.msjavagerenciadorusuarios.data.form;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumEstadoCivil;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumSexoUsuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumTipoPessoa;
-import com.sun.istack.NotNull;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Data
@@ -24,6 +24,10 @@ public class UsuarioForm {
     @NotBlank
     @Length(min = 3)
     private String nomeUsuario;
+
+    @NotNull
+    @NotBlank
+    private String emailUsuario;
 
     @NotNull
     private EnumTipoPessoa tipoPessoa;

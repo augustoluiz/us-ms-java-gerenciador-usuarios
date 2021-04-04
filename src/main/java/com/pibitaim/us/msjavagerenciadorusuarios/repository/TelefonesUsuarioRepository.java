@@ -34,4 +34,8 @@ public interface TelefonesUsuarioRepository extends JpaRepository<TelefonesUsuar
     @Query(value = "SELECT * FROM TBUS006_TEL_USU " +
             "WHERE COD_CAD_TEL = :codCadastroTelefone", nativeQuery = true)
     Optional<List<TelefonesUsuario>> findByTelefoneCodCadastroTelefone(@Param("codCadastroTelefone") Long codCadastroTelefone);
+
+    @Query(value = "SELECT * FROM TBUS006_TEL_USU " +
+            "WHERE COD_IDE_USU = :codUsuario", nativeQuery = true)
+    Optional<List<TelefonesUsuario>> findCodCadastroTelefoneByCodUsuario(@Param("codUsuario") String codUsuario);
 }

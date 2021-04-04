@@ -19,4 +19,6 @@ public interface TelefonesUsuarioService {
 
     Optional<List<TelefonesUsuario>> findByTelefoneCodCadastroTelefone(Long id);
 
+    Optional<List<TelefonesUsuario>> findCodCadastroTelefoneByCodUsuario(String codUsuario);
+
 }

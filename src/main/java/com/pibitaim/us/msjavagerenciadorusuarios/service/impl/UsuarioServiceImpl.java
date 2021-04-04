@@ -42,6 +42,17 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
+    public Integer qtdEmailCadastrado(String emailUsuario) {
+        return usuarioRepository.qtdEmailCadastrado(emailUsuario);
+    }
+
+    @Override
+    public Integer qtdEmailCadastradoOutrosUsuarios(String emailUsuario, Long cpfCnpj) {
+        return usuarioRepository.qtdEmailCadastradoOutrosUsuarios(emailUsuario, cpfCnpj);
+    }
+
+
+    @Override
     public void update(UsuarioForm usuarioForm, Long cpfCnpjOriginal) {
             usuarioRepository.update(usuarioForm.getCpfCnpj(),
                                         usuarioForm.getDataBatismo(),
@@ -51,7 +62,8 @@ public class UsuarioServiceImpl implements UsuarioService {
                                         usuarioForm.getTipoPessoa().toString(),
                                         usuarioForm.getIndicadorMembresia(),
                                         usuarioForm.getNomeUsuario(),
-                                        cpfCnpjOriginal);
+                                        cpfCnpjOriginal,
+                                        usuarioForm.getEmailUsuario());
     }
 
     @Override

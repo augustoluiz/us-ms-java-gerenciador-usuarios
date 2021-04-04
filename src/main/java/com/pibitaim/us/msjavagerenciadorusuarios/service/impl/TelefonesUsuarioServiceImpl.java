@@ -44,4 +44,9 @@ public class TelefonesUsuarioServiceImpl implements TelefonesUsuarioService {
     public Optional<List<TelefonesUsuario>> findByTelefoneCodCadastroTelefone(Long id) {
         return telefonesUsuarioRepository.findByTelefoneCodCadastroTelefone(id);
     }
+
+    @Override
+    public Optional<List<TelefonesUsuario>> findCodCadastroTelefoneByCodUsuario(String codUsuario) {
+        return telefonesUsuarioRepository.findCodCadastroTelefoneByCodUsuario(codUsuario);
+    }
 }

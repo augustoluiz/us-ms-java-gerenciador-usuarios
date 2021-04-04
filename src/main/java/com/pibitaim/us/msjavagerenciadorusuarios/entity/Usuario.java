@@ -3,7 +3,6 @@ package com.pibitaim.us.msjavagerenciadorusuarios.entity;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumEstadoCivil;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumSexoUsuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumTipoPessoa;
-import com.sun.istack.NotNull;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +10,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -67,6 +67,11 @@ public class Usuario {
 
     @NotNull
     @NotBlank
+    @Column(name = "EMAIL_USU")
+    private String emailUsuario;
+
+    @NotNull
+    @NotBlank
     @Column(columnDefinition = "VARCHAR(255)", name = "SEN_ACE_USU")
     private String senhaAcessoUsuario;
 
@@ -84,23 +89,12 @@ public class Usuario {
     )
     private List<TelefonesUsuario> telefonesUsuario;
 
-    @OneToMany(
-            mappedBy = "usuario",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private List<Email> emailsUsuario;
-
     public void setEnderecosUsuario(List<EnderecosUsuario> enderecosUsuario) {
         this.enderecosUsuario = enderecosUsuario;
     }
 
     public void setTelefonesUsuario(List<TelefonesUsuario> telefonesUsuario) {
         this.telefonesUsuario = telefonesUsuario;
-    }
-
-    public void setEmailsUsuario(List<Email> emailsUsuario) {
-        this.emailsUsuario = emailsUsuario;
     }
 
     @Override
@@ -116,10 +110,10 @@ public class Usuario {
                 ", indicadorMembresia=" + indicadorMembresia +
                 ", dataBatismo=" + dataBatismo +
                 ", dataUltimaAtualizacao=" + dataUltimaAtualizacao +
+                ", emailUsuario='" + emailUsuario + '\'' +
                 ", senhaAcessoUsuario='" + senhaAcessoUsuario + '\'' +
                 ", enderecosUsuario=" + enderecosUsuario +
                 ", telefonesUsuario=" + telefonesUsuario +
-                ", emailsUsuario=" + emailsUsuario +
                 '}';
     }
 }

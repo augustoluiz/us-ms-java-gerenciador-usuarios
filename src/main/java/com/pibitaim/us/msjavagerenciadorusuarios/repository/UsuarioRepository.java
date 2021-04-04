@@ -23,6 +23,16 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
             "WHERE CPF_CNPJ = :cpfCnpj", nativeQuery = true)
     Optional<Usuario> findByCpfCnpj(@Param("cpfCnpj") Long cpfCnpj);
 
+    @Query(value = "SELECT COUNT(*) FROM TBUS001_CAD_UNI_USU " +
+            "WHERE EMAIL_USU = :emailUsuario", nativeQuery = true)
+    Integer qtdEmailCadastrado(@Param("emailUsuario") String emailUsuario);
+
+    @Query(value = "SELECT COUNT(*) FROM TBUS001_CAD_UNI_USU " +
+            "WHERE EMAIL_USU = :emailUsuario " +
+            "  AND CPF_CNPJ <> :cpfCnpj", nativeQuery = true)
+    Integer qtdEmailCadastradoOutrosUsuarios(@Param("emailUsuario") String emailUsuario,
+                                             @Param("cpfCnpj") Long cpfCnpj);
+
     @Query(value = "SELECT * FROM TBUS001_CAD_UNI_USU " +
             "WHERE COD_IDE_USU = :codUsuario", nativeQuery = true)
     Optional<Usuario> findByCodUsuario(@Param("codUsuario") UUID codUsuario);
@@ -37,7 +47,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
             "SEX_USU = :sexoUsuario, " +
             "TIP_PES = :tipoPessoa, " +
             "IND_MEM = :indicadorMembresia, " +
-            "NOM_USU = :nomeUsuario " +
+            "NOM_USU = :nomeUsuario, " +
+            "EMAIL_USU = :emailUsuario " +
             "WHERE CPF_CNPJ = :cpfCnpjOriginal", nativeQuery = true)
     void update(@Param("cpfCnpj") Long cpfCnpj,
                    @Param("dataBatismo") LocalDate dataBatismo,
@@ -47,7 +58,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
                    @Param("tipoPessoa") String tipoPessoa,
                    @Param("indicadorMembresia") Boolean indicadorMembresia,
                    @Param("nomeUsuario") String nomeUsuario,
-                   @Param("cpfCnpjOriginal") Long cpfCnpjOriginal);
+                   @Param("cpfCnpjOriginal") Long cpfCnpjOriginal,
+                   @Param("emailUsuario") String emailUsuario);
 
     void deleteByCpfCnpj(Long cpfCnpj);
 
