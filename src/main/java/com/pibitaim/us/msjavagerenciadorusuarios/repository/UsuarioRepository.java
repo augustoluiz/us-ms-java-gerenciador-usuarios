@@ -35,7 +35,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
 
     @Query(value = "SELECT * FROM TBUS001_CAD_UNI_USU " +
             "WHERE COD_IDE_USU = :codUsuario", nativeQuery = true)
-    Optional<Usuario> findByCodUsuario(@Param("codUsuario") UUID codUsuario);
+    Optional<Usuario> findByCodUsuario(@Param("codUsuario") String codUsuario);
 
     @Modifying(clearAutomatically = true)
     @Query(value = "UPDATE TBUS001_CAD_UNI_USU SET " +

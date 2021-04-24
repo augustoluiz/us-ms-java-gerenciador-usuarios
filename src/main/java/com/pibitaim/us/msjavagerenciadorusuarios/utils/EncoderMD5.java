@@ -10,7 +10,6 @@ public class EncoderMD5 {
 
         MessageDigest messageDigest = MessageDigest.getInstance("MD5");
         messageDigest.update(texto.getBytes(), 0, texto.length());
-
         return new BigInteger(1, messageDigest.digest()).toString(16);
 
     }

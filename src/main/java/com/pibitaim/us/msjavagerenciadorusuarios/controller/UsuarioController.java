@@ -1,5 +1,6 @@
 package com.pibitaim.us.msjavagerenciadorusuarios.controller;
 
+import com.pibitaim.us.msjavagerenciadorusuarios.config.validacao.ErroPadrao;
 import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.EnderecoUtils;
 import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.TelefoneUtils;
 import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.UsuarioUtils;
@@ -73,7 +74,7 @@ public class UsuarioController {
     @PostMapping
     @Transactional
     @CacheEvict(value = "listaUsuarios", allEntries = true)
-    public ResponseEntity<UsuarioDTO> save(@RequestBody @Valid UsuarioForm usuarioForm) throws NoSuchAlgorithmException {
+    public ResponseEntity<UsuarioDTO> save(@RequestBody @Valid UsuarioForm usuarioForm) throws Exception {
         if(UsuarioUtils.usuarioExiste(usuarioService, usuarioForm.getCpfCnpj()) || UsuarioUtils.emailCadastrado(usuarioService, usuarioForm.getEmailUsuario())){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
