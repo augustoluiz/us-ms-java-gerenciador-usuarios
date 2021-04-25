@@ -8,8 +8,6 @@ import lombok.Setter;
 import javax.validation.constraints.NotNull;
 
 @Data
-@Getter
-@Setter
 public class TelefoneForm {
 
     @NotNull
