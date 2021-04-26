@@ -1,8 +1,11 @@
 package com.pibitaim.us.msjavagerenciadorusuarios.controller;
 
+import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.PerfilUtils;
 import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.UsuarioUtils;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.PerfilDTO;
+import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.UsuarioDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.PerfilMapper;
+import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.UsuarioMapper;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.Perfil;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.PerfilService;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.UsuarioService;
@@ -32,6 +35,9 @@ public class PerfilController {
     private PerfilMapper perfilMapper;
 
     @Autowired
+    private UsuarioMapper usuarioMapper;
+
+    @Autowired
     private UsuarioService usuarioService;
 
     @GetMapping
@@ -52,6 +58,14 @@ public class PerfilController {
             return ResponseEntity.notFound().build();
         }
         return new ResponseEntity<Page<PerfilDTO>>(perfilMapper.converteParaDTO(perfilService.findByUsuarioId(paginacao, usuarioCpfCnpj)), HttpStatus.OK);
+    }
+
+    @GetMapping("/usuariosPerfil/{id}")
+    public ResponseEntity<Page<UsuarioDTO>> findUsuariosByTelefoneId(@PathVariable Long id, @PageableDefault(sort = "CPF_CNPJ", direction = Sort.Direction.ASC, page = 0, size = 10) Pageable paginacao){
+        if(!PerfilUtils.perfilExiste(perfilService, id)){
+            return ResponseEntity.notFound().build();
+        }
+        return new ResponseEntity<Page<UsuarioDTO>>(usuarioMapper.converteParaDTO(usuarioService.findByPerfilId(paginacao, id)), HttpStatus.OK);
     }
 
 
