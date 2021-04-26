@@ -1,9 +1,11 @@
 package com.pibitaim.us.msjavagerenciadorusuarios.controller;
 
+import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.UsuarioUtils;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.PerfilDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.PerfilMapper;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.Perfil;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.PerfilService;
+import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -29,6 +31,9 @@ public class PerfilController {
     @Autowired
     private PerfilMapper perfilMapper;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     @GetMapping
     @Cacheable(value = "listaPerfis")
     public Page<PerfilDTO> findAll(@PageableDefault(sort = "perfilId", direction = Sort.Direction.ASC, page = 0, size = 10) Pageable paginacao){
@@ -40,5 +45,14 @@ public class PerfilController {
         Optional<Perfil> perfil = perfilService.findById(id);
         return perfil.isPresent() ? new ResponseEntity<PerfilDTO>(perfilMapper.converteParaDTO(perfil.get()), HttpStatus.OK) : ResponseEntity.notFound().build();
     }
+
+    @GetMapping("/perfisUsuario/{usuarioCpfCnpj}")
+    public ResponseEntity<Page<PerfilDTO>> findByUsuarioId(@PathVariable Long usuarioCpfCnpj, @PageableDefault(sort = "COD_CAD_PER", direction = Sort.Direction.ASC, page = 0, size = 10) Pageable paginacao){
+        if(!UsuarioUtils.usuarioExiste(usuarioService, usuarioCpfCnpj)){
+            return ResponseEntity.notFound().build();
+        }
+        return new ResponseEntity<Page<PerfilDTO>>(perfilMapper.converteParaDTO(perfilService.findByUsuarioId(paginacao, usuarioCpfCnpj)), HttpStatus.OK);
+    }
+
 
 }

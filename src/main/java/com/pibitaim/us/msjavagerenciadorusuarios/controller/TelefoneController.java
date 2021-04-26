@@ -73,7 +73,6 @@ public class TelefoneController {
         if(!UsuarioUtils.usuarioExiste(usuarioService, usuarioCpfCnpj)){
             return ResponseEntity.notFound().build();
         }
-        telefoneService.findByUsuarioId(paginacao, usuarioCpfCnpj);
         return new ResponseEntity<Page<TelefoneDTO>>(telefoneMapper.converteParaDTO(telefoneService.findByUsuarioId(paginacao, usuarioCpfCnpj)), HttpStatus.OK);
     }
 
