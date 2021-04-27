@@ -118,7 +118,7 @@ public class TelefoneController {
 
         telefonesUsuarioService.save(telefonesUsuarioMapper.converteParaEntity(telefonesUsuarioForm, usuario.get(), telefone));
 
-        return new ResponseEntity<TelefoneDTO>(telefoneDTO, HttpStatus.OK);
+        return new ResponseEntity<TelefoneDTO>(telefoneDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{cpfCnpjUsuario}/{id}")
@@ -134,7 +134,7 @@ public class TelefoneController {
 
         List<TelefonesUsuario> telefonesUsuarios = atualizaTelefonesUsuarioParaCpfCnpj(codUsuario.get(), id, listTelefonesUsuario.get(), telefoneForm.isTelefonePrincipal());
 
-        return new ResponseEntity<TelefoneDTO>(telefoneMapper.converteParaDTO(telefoneService.save(telefoneMapper.converteParaEntity(telefoneForm, id, telefonesUsuarios))), HttpStatus.CREATED);
+        return new ResponseEntity<TelefoneDTO>(telefoneMapper.converteParaDTO(telefoneService.save(telefoneMapper.converteParaEntity(telefoneForm, id, telefonesUsuarios))), HttpStatus.OK);
     }
 
     @DeleteMapping("/{cpfCnpjUsuario}/{id}")

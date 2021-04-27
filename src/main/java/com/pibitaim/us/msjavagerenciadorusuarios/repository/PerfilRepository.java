@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface PerfilRepository extends JpaRepository<Perfil, Long> {
 
     @Query(value = "SELECT * FROM TBUS007_CAD_PER_ACE PER " +
@@ -16,5 +18,10 @@ public interface PerfilRepository extends JpaRepository<Perfil, Long> {
             "ON (PEU.COD_IDE_USU = USU.COD_IDE_USU) " +
             "WHERE USU.CPF_CNPJ = :usuarioCpfCnpj", nativeQuery = true)
     Page<Perfil> findByUsuarioId(Pageable paginacao, @Param("usuarioCpfCnpj") Long usuarioCpfCnpj);
+
+    @Query(value = "SELECT * FROM TBUS007_CAD_PER_ACE " +
+            "WHERE PER_PAP = :papel " +
+            "  AND PER_PRM = :permissao", nativeQuery = true)
+    Optional<Perfil> existsByPapelPermissao(@Param("papel") String papel, @Param("permissao") String permissao);
 
 }

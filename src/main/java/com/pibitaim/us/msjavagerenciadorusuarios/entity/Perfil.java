@@ -15,7 +15,7 @@ public class Perfil {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long perfilId;
 
-    @Column(columnDefinition = "VARCHAR(50)", name = "PER_PAP")
+    @Column(name = "PER_PAP")
     @Enumerated(EnumType.STRING)
     private EnumPapel papel;
 

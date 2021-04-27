@@ -13,8 +13,6 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Data
-@Getter
-@Setter
 public class UsuarioForm {
 
     @NotNull

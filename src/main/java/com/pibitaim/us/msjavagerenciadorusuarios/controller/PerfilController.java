@@ -1,15 +1,23 @@
 package com.pibitaim.us.msjavagerenciadorusuarios.controller;
 
 import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.PerfilUtils;
+import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.TelefoneUtils;
 import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.UsuarioUtils;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.PerfilDTO;
+import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.TelefoneDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.UsuarioDTO;
+import com.pibitaim.us.msjavagerenciadorusuarios.data.form.PerfilForm;
+import com.pibitaim.us.msjavagerenciadorusuarios.data.form.TelefoneForm;
+import com.pibitaim.us.msjavagerenciadorusuarios.data.form.TelefonesUsuarioForm;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.PerfilMapper;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.UsuarioMapper;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.Perfil;
+import com.pibitaim.us.msjavagerenciadorusuarios.entity.Telefone;
+import com.pibitaim.us.msjavagerenciadorusuarios.entity.Usuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.PerfilService;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,11 +25,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import sun.misc.Perf;
 
+import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -68,5 +76,14 @@ public class PerfilController {
         return new ResponseEntity<Page<UsuarioDTO>>(usuarioMapper.converteParaDTO(usuarioService.findByPerfilId(paginacao, id)), HttpStatus.OK);
     }
 
+    @PostMapping
+    @Transactional
+    @CacheEvict(value = "listaPerfis", allEntries = true)
+    public ResponseEntity<PerfilDTO> save(@RequestBody @Valid PerfilForm perfilForm){
+        if(PerfilUtils.perfilExiste(perfilService, perfilForm.getPapel(), perfilForm.getPermissao())){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        return new ResponseEntity<PerfilDTO>(perfilMapper.converteParaDTO(perfilService.save(perfilMapper.converteParaEntity(perfilForm))), HttpStatus.CREATED);
+    }
 
 }

@@ -2,6 +2,8 @@ package com.pibitaim.us.msjavagerenciadorusuarios.service.impl;
 
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.Perfil;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.Telefone;
+import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumPapel;
+import com.pibitaim.us.msjavagerenciadorusuarios.entity.enums.EnumPermissao;
 import com.pibitaim.us.msjavagerenciadorusuarios.repository.PerfilRepository;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.PerfilService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,16 @@ public class PerfilServiceImpl implements PerfilService {
     @Override
     public Optional<Perfil> findById(Long id) {
         return perfilRepository.findById(id);
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return perfilRepository.existsById(id);
+    }
+
+    @Override
+    public boolean existsByPapelPermissao(EnumPapel papel, EnumPermissao permissao) {
+        return perfilRepository.existsByPapelPermissao(papel.getPapel(), permissao.getPermissao()).isPresent();
     }
 
     @Override

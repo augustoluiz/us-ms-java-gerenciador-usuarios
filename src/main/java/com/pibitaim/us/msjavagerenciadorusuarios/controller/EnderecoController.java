@@ -119,7 +119,7 @@ public class EnderecoController {
 
         enderecosUsuarioService.save(enderecosUsuarioMapper.converteParaEntity(enderecosUsuarioForm, usuario.get(), endereco));
 
-        return new ResponseEntity<EnderecoDTO>(enderecoDTO, HttpStatus.OK);
+        return new ResponseEntity<EnderecoDTO>(enderecoDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{cpfCnpjUsuario}/{id}")
@@ -135,7 +135,7 @@ public class EnderecoController {
 
         List<EnderecosUsuario> enderecosUsuarios = atualizaEnderecosUsuarioParaCpfCnpj(codUsuario.get(), id, listEnderecosUsuario.get(), enderecoAtributosForm.isEnderecoPrincipal());
 
-        return new ResponseEntity<EnderecoDTO>(enderecoMapper.converteParaDTO(enderecoService.save(enderecoMapper.converteParaEntity(enderecoAtributosForm, id, enderecosUsuarios))), HttpStatus.CREATED);
+        return new ResponseEntity<EnderecoDTO>(enderecoMapper.converteParaDTO(enderecoService.save(enderecoMapper.converteParaEntity(enderecoAtributosForm, id, enderecosUsuarios))), HttpStatus.OK);
 
     }
 
