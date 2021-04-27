@@ -1,19 +1,13 @@
 package com.pibitaim.us.msjavagerenciadorusuarios.controller;
 
 import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.PerfilUtils;
-import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.TelefoneUtils;
 import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.UsuarioUtils;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.PerfilDTO;
-import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.TelefoneDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.UsuarioDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.form.PerfilForm;
-import com.pibitaim.us.msjavagerenciadorusuarios.data.form.TelefoneForm;
-import com.pibitaim.us.msjavagerenciadorusuarios.data.form.TelefonesUsuarioForm;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.PerfilMapper;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.UsuarioMapper;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.Perfil;
-import com.pibitaim.us.msjavagerenciadorusuarios.entity.Telefone;
-import com.pibitaim.us.msjavagerenciadorusuarios.entity.Usuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.PerfilService;
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +20,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sun.misc.Perf;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -84,6 +77,24 @@ public class PerfilController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         return new ResponseEntity<PerfilDTO>(perfilMapper.converteParaDTO(perfilService.save(perfilMapper.converteParaEntity(perfilForm))), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    @Transactional
+    @CacheEvict(value = "listaPerfis", allEntries = true)
+    public ResponseEntity<PerfilDTO> update(@PathVariable Long id, @RequestBody @Valid PerfilForm perfilForm){
+        if(!PerfilUtils.perfilExiste(perfilService, id)){
+            return ResponseEntity.notFound().build();
+        } else if (PerfilUtils.perfilExiste(perfilService, perfilForm.getPapel(), perfilForm.getPermissao())){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        Perfil perfil = perfilService.findById(id).get();
+
+        perfil.setPapel(perfilForm.getPapel());
+        perfil.setPermissao(perfilForm.getPermissao());
+
+        return new ResponseEntity<PerfilDTO>(perfilMapper.converteParaDTO(perfilService.save(perfil)), HttpStatus.OK);
     }
 
 }
