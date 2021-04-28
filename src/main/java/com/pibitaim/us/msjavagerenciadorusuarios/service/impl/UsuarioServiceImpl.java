@@ -97,8 +97,13 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public Page<Usuario> findByPerfilId(Pageable paginacao, Long perfilId) {
+    public Optional<Page<Usuario>> findByPerfilId(Pageable paginacao, Long perfilId) {
         return usuarioRepository.findByPerfilId(paginacao, perfilId);
+    }
+
+    @Override
+    public boolean existsUsuarioByPerfilId(Long perfilId) {
+        return usuarioRepository.findQtdUsuarioByPerfilId(perfilId) > 0 ? true : false;
     }
 
 }

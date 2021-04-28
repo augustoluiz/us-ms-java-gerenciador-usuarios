@@ -62,11 +62,11 @@ public class PerfilController {
     }
 
     @GetMapping("/usuariosPerfil/{id}")
-    public ResponseEntity<Page<UsuarioDTO>> findUsuariosByTelefoneId(@PathVariable Long id, @PageableDefault(sort = "CPF_CNPJ", direction = Sort.Direction.ASC, page = 0, size = 10) Pageable paginacao){
+    public ResponseEntity<Page<UsuarioDTO>> findUsuariosByPerfilId(@PathVariable Long id, @PageableDefault(sort = "CPF_CNPJ", direction = Sort.Direction.ASC, page = 0, size = 10) Pageable paginacao){
         if(!PerfilUtils.perfilExiste(perfilService, id)){
             return ResponseEntity.notFound().build();
         }
-        return new ResponseEntity<Page<UsuarioDTO>>(usuarioMapper.converteParaDTO(usuarioService.findByPerfilId(paginacao, id)), HttpStatus.OK);
+        return new ResponseEntity<Page<UsuarioDTO>>(usuarioMapper.converteParaDTO(usuarioService.findByPerfilId(paginacao, id).get()), HttpStatus.OK);
     }
 
     @PostMapping
@@ -95,6 +95,19 @@ public class PerfilController {
         perfil.setPermissao(perfilForm.getPermissao());
 
         return new ResponseEntity<PerfilDTO>(perfilMapper.converteParaDTO(perfilService.save(perfil)), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    @CacheEvict(value = "listaPerfis", allEntries = true)
+    public ResponseEntity delete(@PathVariable Long id){
+        if(!PerfilUtils.perfilExiste(perfilService, id)){
+            return ResponseEntity.notFound().build();
+        } else if(UsuarioUtils.existsUsuarioByPerfilId(usuarioService, id)){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        perfilService.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 
 }

@@ -24,4 +24,9 @@ public class UsuarioUtils {
         return usuarioService.findCodUsuarioByCpfCnpj(cpfCnpj);
     }
 
+    public static boolean existsUsuarioByPerfilId(UsuarioService usuarioService, Long id){
+        return usuarioService.existsUsuarioByPerfilId(id);
+    }
+
+
 }

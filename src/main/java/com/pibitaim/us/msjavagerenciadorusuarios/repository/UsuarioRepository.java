@@ -91,6 +91,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
             "INNER JOIN TBUS008_PER_USU PER " +
             "ON (USU.COD_IDE_USU = PER.COD_IDE_USU) " +
             "WHERE PER.COD_CAD_PER = :perfilId", nativeQuery = true)
-    Page<Usuario> findByPerfilId(Pageable paginacao, @Param("perfilId") Long perfilId);
+    Optional<Page<Usuario>> findByPerfilId(Pageable paginacao, @Param("perfilId") Long perfilId);
+
+    @Query(value = "SELECT COUNT(*) FROM TBUS008_PER_USU " +
+            "WHERE COD_CAD_PER = :perfilId", nativeQuery = true)
+    Integer findQtdUsuarioByPerfilId(@Param("perfilId") Long perfilId);
 
 }
