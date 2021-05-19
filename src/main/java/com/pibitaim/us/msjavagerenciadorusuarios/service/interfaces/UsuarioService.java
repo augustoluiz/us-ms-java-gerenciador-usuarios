@@ -17,6 +17,8 @@ public interface UsuarioService {
 
     Usuario save(Usuario usuario);
 
+    void savePerfil(String codUsuario, Long perfilId);
+
     Optional<Usuario> findByCpfCnpj(Long cpfCnpj);
 
     Integer qtdEmailCadastrado(String emailUsuario);

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -34,6 +35,11 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public Usuario save(Usuario usuario) {
         return usuarioRepository.save(usuario);
+    }
+
+    @Override
+    public void savePerfil(String codUsuario, Long perfilId) {
+        usuarioRepository.savePerfil(codUsuario, perfilId);
     }
 
     @Override

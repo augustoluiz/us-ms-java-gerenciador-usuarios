@@ -2,6 +2,7 @@ package com.pibitaim.us.msjavagerenciadorusuarios.data.mapper;
 
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.UsuarioDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.form.UsuarioForm;
+import com.pibitaim.us.msjavagerenciadorusuarios.data.form.UsuarioFormPerfil;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.interfaces.MapperDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.interfaces.MapperUsuarioForm;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.Usuario;
@@ -30,6 +31,14 @@ public class UsuarioMapper implements MapperDTO<Usuario, UsuarioDTO>, MapperUsua
             mapper.map(src -> new Date(), Usuario::setDataUltimaAtualizacao);
             mapper.map(src -> usuarioForm.getEmailUsuario().toLowerCase(), Usuario::setEmailUsuario);
         }).map(usuarioForm);
+    }
+
+    public Usuario converteParaEntity(UsuarioFormPerfil usuarioFormPerfil, String senhaInicial) {
+        return mapper.typeMap(UsuarioFormPerfil.class, Usuario.class).addMappings(mapper -> {
+            mapper.map(src -> senhaInicial, Usuario::setSenhaAcessoUsuario);
+            mapper.map(src -> new Date(), Usuario::setDataUltimaAtualizacao);
+            mapper.map(src -> usuarioFormPerfil.getEmailUsuario().toLowerCase(), Usuario::setEmailUsuario);
+        }).map(usuarioFormPerfil);
     }
 
 

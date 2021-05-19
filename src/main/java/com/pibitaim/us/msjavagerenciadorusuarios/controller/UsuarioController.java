@@ -1,11 +1,12 @@
 package com.pibitaim.us.msjavagerenciadorusuarios.controller;
 
-import com.pibitaim.us.msjavagerenciadorusuarios.config.validacao.ErroPadrao;
 import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.EnderecoUtils;
+import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.PerfilUtils;
 import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.TelefoneUtils;
 import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.UsuarioUtils;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.UsuarioDTO;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.form.UsuarioForm;
+import com.pibitaim.us.msjavagerenciadorusuarios.data.form.UsuarioFormPerfil;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.form.UsuarioSenhaForm;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.UsuarioMapper;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.EnderecosUsuario;
@@ -32,11 +33,14 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 @Slf4j
 @RestController
 @RequestMapping(value = "/us-gerenciador-usuarios/usuario")
 public class UsuarioController {
+
+    private static final Logger logger = Logger.getLogger(String.valueOf(UsuarioController.class));
 
     @Autowired
     private UsuarioService usuarioService;
@@ -52,6 +56,9 @@ public class UsuarioController {
 
     @Autowired
     private TelefoneService telefoneService;
+
+    @Autowired
+    private PerfilService perfilService;
 
     @Autowired
     private UsuarioMapper usuarioMapper;
@@ -74,12 +81,22 @@ public class UsuarioController {
     @PostMapping
     @Transactional
     @CacheEvict(value = "listaUsuarios", allEntries = true)
-    public ResponseEntity<UsuarioDTO> save(@RequestBody @Valid UsuarioForm usuarioForm) throws Exception {
-        if(UsuarioUtils.usuarioExiste(usuarioService, usuarioForm.getCpfCnpj()) || UsuarioUtils.emailCadastrado(usuarioService, usuarioForm.getEmailUsuario())){
+    public ResponseEntity<UsuarioDTO> save(@RequestBody @Valid UsuarioFormPerfil usuarioFormPerfil) throws Exception {
+        if(UsuarioUtils.usuarioExiste(usuarioService, usuarioFormPerfil.getCpfCnpj()) ||
+                UsuarioUtils.emailCadastrado(usuarioService, usuarioFormPerfil.getEmailUsuario()) ||
+                !PerfilUtils.perfisExistem(perfilService, usuarioFormPerfil.getPerfisUsuario())){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
+
         String senhaInicial = new SenhaInicial().geraSenhaInicial();
-        return new ResponseEntity<UsuarioDTO>(usuarioMapper.converteParaDTO(usuarioService.save(usuarioMapper.converteParaEntity(usuarioForm, senhaInicial))), HttpStatus.CREATED);
+        Usuario usuario = usuarioService.save(usuarioMapper.converteParaEntity(usuarioFormPerfil, senhaInicial));
+
+        usuarioFormPerfil.getPerfisUsuario().forEach(perfilDTO -> {
+            usuarioService.savePerfil(usuario.getCodUsuario().toString(), perfilDTO);
+        });
+
+        return new ResponseEntity<UsuarioDTO>(usuarioMapper.converteParaDTO(usuarioService.findByCpfCnpj(usuario.getCpfCnpj()).get()), HttpStatus.CREATED);
+
     }
 
     @PutMapping("/{cpfCnpj}")
@@ -89,7 +106,8 @@ public class UsuarioController {
         if(!UsuarioUtils.usuarioExiste(usuarioService, cpfCnpj)){
             return ResponseEntity.notFound().build();
         }
-        if(UsuarioUtils.emailCadastradoOutrosUsuarios(usuarioService, usuarioForm.getEmailUsuario(), cpfCnpj) || (usuarioForm.getCpfCnpj().compareTo(cpfCnpj) != 0 && UsuarioUtils.usuarioExiste(usuarioService, usuarioForm.getCpfCnpj()))){
+        if(UsuarioUtils.emailCadastradoOutrosUsuarios(usuarioService, usuarioForm.getEmailUsuario(), cpfCnpj) ||
+                (usuarioForm.getCpfCnpj().compareTo(cpfCnpj) != 0 && UsuarioUtils.usuarioExiste(usuarioService, usuarioForm.getCpfCnpj()))){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         usuarioService.update(usuarioForm, cpfCnpj);

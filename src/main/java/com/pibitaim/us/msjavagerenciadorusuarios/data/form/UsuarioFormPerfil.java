@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Data
-public class UsuarioForm {
+public class UsuarioFormPerfil {
 
     @NotNull
     private Long cpfCnpj;
@@ -43,5 +43,7 @@ public class UsuarioForm {
 
     private LocalDate dataBatismo;
 
+    @NotNull
+    private List<Long> perfisUsuario;
 
 }

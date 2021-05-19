@@ -27,5 +27,6 @@ public class UsuarioDTO {
     private Date dataUltimaAtualizacao;
     private List<EnderecosUsuarioDTO> enderecosUsuario;
     private List<TelefonesUsuarioDTO> telefonesUsuario;
+    private List<PerfilDTO> perfisUsuario;
 
 }

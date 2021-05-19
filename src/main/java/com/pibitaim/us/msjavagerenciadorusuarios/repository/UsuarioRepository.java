@@ -97,4 +97,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
             "WHERE COD_CAD_PER = :perfilId", nativeQuery = true)
     Integer findQtdUsuarioByPerfilId(@Param("perfilId") Long perfilId);
 
+    @Modifying(clearAutomatically = true)
+    @Query(value = "INSERT INTO TBUS008_PER_USU  " +
+            "(COD_IDE_USU, COD_CAD_PER) VALUES " +
+            "(:codUsuario, :perfilId) ", nativeQuery = true)
+    void savePerfil(@Param("codUsuario") String codUsuario, @Param("perfilId") Long perfilId);
+
 }
