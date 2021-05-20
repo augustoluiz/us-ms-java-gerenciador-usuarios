@@ -33,6 +33,8 @@ public interface UsuarioService {
 
     void updateSenha(Long cpfCnpj, String novaSenha) throws NoSuchAlgorithmException;
 
+    void updatePerfis(String codUsuario, Long atualPerfilId, Long novoPerfilId);
+
     Page<Usuario> findByEnderecoId(Pageable paginacao, Long enderecoId);
 
     Page<Usuario> findByTelefoneId(Pageable paginacao, Long telefoneId);
@@ -40,5 +42,7 @@ public interface UsuarioService {
     Optional<Page<Usuario>> findByPerfilId(Pageable paginacao, Long perfilId);
 
     boolean existsUsuarioByPerfilId(Long perfilId);
+
+    boolean usuarioPossuiPerfil(String codUsuario, Long perfilId);
 
 }

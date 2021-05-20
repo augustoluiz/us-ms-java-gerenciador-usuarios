@@ -75,6 +75,13 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
             "WHERE CPF_CNPJ = :cpfCnpj", nativeQuery = true)
     void updateSenha(@Param("cpfCnpj") Long cpfCnpj, @Param("novaSenha") String novaSenha, @Param("dataUltimaAtualizacao") Date dataUltimaAtualizacao);
 
+    @Modifying(clearAutomatically = true)
+    @Query(value = "UPDATE TBUS008_PER_USU " +
+            "SET COD_CAD_PER = :novoPerfilId " +
+            "WHERE COD_IDE_USU = :codUsuario " +
+            "  AND COD_CAD_PER = :atualPerfilId", nativeQuery = true)
+    void updatePerfil(@Param("codUsuario") String codUsuario, @Param("atualPerfilId") Long atualPerfilId, @Param("novoPerfilId") Long novoPerfilId);
+
     @Query(value = "SELECT * FROM TBUS001_CAD_UNI_USU USU " +
             "INNER JOIN TBUS005_END_USU END " +
             "ON (USU.COD_IDE_USU = END.COD_IDE_USU) " +
@@ -102,5 +109,12 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
             "(COD_IDE_USU, COD_CAD_PER) VALUES " +
             "(:codUsuario, :perfilId) ", nativeQuery = true)
     void savePerfil(@Param("codUsuario") String codUsuario, @Param("perfilId") Long perfilId);
+
+    @Query(value = "SELECT * FROM TBUS001_CAD_UNI_USU USU " +
+            "INNER JOIN TBUS008_PER_USU PEU " +
+            "ON (USU.COD_IDE_USU = PEU.COD_IDE_USU) " +
+            "WHERE PEU.COD_IDE_USU = :codUsuario " +
+            "  AND PEU.COD_CAD_PER = :perfilId", nativeQuery = true)
+    Optional<Usuario> findByCodUsuarioAndPerfilId(@Param("codUsuario") String codUsuario, @Param("perfilId") Long perfilId);
 
 }

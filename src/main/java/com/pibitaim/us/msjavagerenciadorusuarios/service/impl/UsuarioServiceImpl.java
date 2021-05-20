@@ -93,6 +93,11 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
+    public void updatePerfis(String codUsuario, Long atualPerfilId, Long novoPerfilId) {
+        usuarioRepository.updatePerfil(codUsuario, atualPerfilId, novoPerfilId);
+    }
+
+    @Override
     public Page<Usuario> findByEnderecoId(Pageable paginacao, Long enderecoId) {
         return usuarioRepository.findByEnderecoId(paginacao, enderecoId);
     }
@@ -110,6 +115,11 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public boolean existsUsuarioByPerfilId(Long perfilId) {
         return usuarioRepository.findQtdUsuarioByPerfilId(perfilId) > 0 ? true : false;
+    }
+
+    @Override
+    public boolean usuarioPossuiPerfil(String codUsuario, Long perfilId) {
+        return usuarioRepository.findByCodUsuarioAndPerfilId(codUsuario, perfilId).isPresent();
     }
 
 }

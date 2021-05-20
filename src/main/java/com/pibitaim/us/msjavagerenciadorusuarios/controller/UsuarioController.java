@@ -5,9 +5,7 @@ import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.PerfilUtils;
 import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.TelefoneUtils;
 import com.pibitaim.us.msjavagerenciadorusuarios.controller.utils.UsuarioUtils;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.dto.UsuarioDTO;
-import com.pibitaim.us.msjavagerenciadorusuarios.data.form.UsuarioForm;
-import com.pibitaim.us.msjavagerenciadorusuarios.data.form.UsuarioFormPerfil;
-import com.pibitaim.us.msjavagerenciadorusuarios.data.form.UsuarioSenhaForm;
+import com.pibitaim.us.msjavagerenciadorusuarios.data.form.*;
 import com.pibitaim.us.msjavagerenciadorusuarios.data.mapper.UsuarioMapper;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.EnderecosUsuario;
 import com.pibitaim.us.msjavagerenciadorusuarios.entity.TelefonesUsuario;
@@ -29,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import javax.xml.ws.Response;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
@@ -125,6 +124,27 @@ public class UsuarioController {
         return ResponseEntity.notFound().build();
     }
 
+    @PatchMapping("/alterarPerfis/{cpfCnpj}")
+    @Transactional
+    @CacheEvict(value = "listaUsuarios", allEntries = true)
+    public ResponseEntity alterarPerfis(@PathVariable Long cpfCnpj, @RequestBody @Valid PerfisUsuarioForm perfisUsuarioForm) {
+        if(UsuarioUtils.usuarioExiste(usuarioService, cpfCnpj)){
+            String codUsuario = UsuarioUtils.findCodUsuarioByCpfCnpj(usuarioService, cpfCnpj).get().toString();
+            if(podeAlterarPerfis(perfisUsuarioForm, codUsuario)){
+                perfisUsuarioForm.getPerfisUsuarioNovo().forEach(perfil -> {
+                    usuarioService.updatePerfis(codUsuario, perfisUsuarioForm.getPerfisUsuarioAtual().get(0), perfil);
+                    perfisUsuarioForm.getPerfisUsuarioAtual().remove(0);
+                });
+                return ResponseEntity.ok().build();
+            }
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    //TODO: Método Delete para deletar os perfis de acessos
+    //Usar o UsuarioFormPerfil
+
     @DeleteMapping("/{cpfCnpj}")
     @Transactional
     @CacheEvict(value = "listaUsuarios", allEntries = true)
@@ -172,6 +192,12 @@ public class UsuarioController {
             });
         }
 
+    }
+
+    private boolean podeAlterarPerfis(PerfisUsuarioForm perfisUsuarioForm, String codUsuario){
+        return PerfilUtils.perfisExistem(perfilService, perfisUsuarioForm.getPerfisUsuarioNovo()) &&
+                UsuarioUtils.usuarioPossuiPerfis(usuarioService, codUsuario, perfisUsuarioForm.getPerfisUsuarioAtual()) &&
+                perfisUsuarioForm.getPerfisUsuarioAtual().size() == perfisUsuarioForm.getPerfisUsuarioNovo().size();
     }
 
 }

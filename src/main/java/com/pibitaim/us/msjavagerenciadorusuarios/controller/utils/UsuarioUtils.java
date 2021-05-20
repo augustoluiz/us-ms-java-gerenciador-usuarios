@@ -2,6 +2,7 @@ package com.pibitaim.us.msjavagerenciadorusuarios.controller.utils;
 
 import com.pibitaim.us.msjavagerenciadorusuarios.service.interfaces.UsuarioService;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -26,6 +27,12 @@ public class UsuarioUtils {
 
     public static boolean existsUsuarioByPerfilId(UsuarioService usuarioService, Long id){
         return usuarioService.existsUsuarioByPerfilId(id);
+    }
+
+    public static boolean usuarioPossuiPerfis(UsuarioService usuarioService, String codUsuario, List<Long> perfisAtuais){
+        return !perfisAtuais.stream()
+                .map(p -> usuarioService.usuarioPossuiPerfil(codUsuario, p))
+                .filter(p -> p == false).findFirst().isPresent();
     }
 
 

@@ -17,8 +17,9 @@ public class PerfilUtils {
     }
 
     public static boolean perfisExistem(PerfilService perfilService, List<Long> perfis){
-        return perfis.stream()
-                .map(p -> perfilService.existsById(p)).filter(p -> p == true).findFirst().isPresent();
+        return !perfis.stream()
+                .map(p -> perfilService.existsById(p))
+                .filter(p -> p == false).findFirst().isPresent();
     }
 
 }
