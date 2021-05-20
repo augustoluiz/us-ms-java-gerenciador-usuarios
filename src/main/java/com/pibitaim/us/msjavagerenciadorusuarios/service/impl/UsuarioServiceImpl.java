@@ -122,4 +122,9 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarioRepository.findByCodUsuarioAndPerfilId(codUsuario, perfilId).isPresent();
     }
 
+    @Override
+    public void deletePerfil(String codUsuario, Long perfilId) {
+        usuarioRepository.deletePerfil(codUsuario, perfilId);
+    }
+
 }

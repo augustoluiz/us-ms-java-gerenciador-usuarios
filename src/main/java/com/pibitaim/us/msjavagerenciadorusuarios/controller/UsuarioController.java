@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import javax.xml.ws.Response;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
@@ -142,9 +141,6 @@ public class UsuarioController {
         return ResponseEntity.notFound().build();
     }
 
-    //TODO: Método Delete para deletar os perfis de acessos
-    //Usar o UsuarioFormPerfil
-
     @DeleteMapping("/{cpfCnpj}")
     @Transactional
     @CacheEvict(value = "listaUsuarios", allEntries = true)
@@ -156,6 +152,19 @@ public class UsuarioController {
             usuarioService.deleteByCpfCnpj(cpfCnpj);
             validaEnderecosSemRelacionamento(enderecosUsuarios);
             validaTelefonesSemRelacionamento(telefonesUsuarios);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/deletaPerfil/{cpfCnpj}/{perfilId}")
+    @Transactional
+    @CacheEvict(value = "listaUsuarios", allEntries = true)
+    public ResponseEntity deletaPerfis(@PathVariable Long cpfCnpj, @PathVariable Long perfilId){
+        Optional<UUID> codUsuario = UsuarioUtils.findCodUsuarioByCpfCnpj(usuarioService, cpfCnpj);
+        if(codUsuario.isPresent() && PerfilUtils.perfilExiste(perfilService, perfilId) &&
+                usuarioService.usuarioPossuiPerfil(codUsuario.get().toString(), perfilId)){
+            usuarioService.deletePerfil(codUsuario.get().toString(), perfilId);
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();

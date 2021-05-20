@@ -117,4 +117,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
             "  AND PEU.COD_CAD_PER = :perfilId", nativeQuery = true)
     Optional<Usuario> findByCodUsuarioAndPerfilId(@Param("codUsuario") String codUsuario, @Param("perfilId") Long perfilId);
 
+    @Modifying(clearAutomatically = true)
+    @Query(value = "DELETE FROM TBUS008_PER_USU " +
+            "WHERE COD_IDE_USU = :codUsuario " +
+            "  AND COD_CAD_PER = :perfilId", nativeQuery = true)
+    void deletePerfil(@Param("codUsuario") String codUsuario, @Param("perfilId") Long perfilId);
+
 }

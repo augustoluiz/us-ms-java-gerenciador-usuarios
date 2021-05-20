@@ -45,4 +45,6 @@ public interface UsuarioService {
 
     boolean usuarioPossuiPerfil(String codUsuario, Long perfilId);
 
+    void deletePerfil(String codUsuario, Long perfilId);
+
 }
