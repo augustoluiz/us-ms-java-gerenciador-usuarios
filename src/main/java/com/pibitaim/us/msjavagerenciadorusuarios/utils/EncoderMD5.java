@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class EncoderMD5 {
 
-    public static String encodeToMD5(String texto) throws NoSuchAlgorithmException {
+    public static String encodeToMD5(String texto) throws NoSuchAlgorithmException, NullPointerException {
 
         MessageDigest messageDigest = MessageDigest.getInstance("MD5");
         messageDigest.update(texto.getBytes(), 0, texto.length());

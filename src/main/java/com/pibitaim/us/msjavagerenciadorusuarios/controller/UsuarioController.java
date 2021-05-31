@@ -174,7 +174,7 @@ public class UsuarioController {
         try{
             senhaAtual = new EncoderMD5().encodeToMD5(senhaAtual);
             return usuarioService.findByCpfCnpjAndSenha(cpfCnpj, senhaAtual).isPresent();
-        }catch (NoSuchAlgorithmException exception) {
+        }catch (NoSuchAlgorithmException | NullPointerException exception) {
             throw new NoSuchAlgorithmException("Erro de validações internas");
         }
     }
