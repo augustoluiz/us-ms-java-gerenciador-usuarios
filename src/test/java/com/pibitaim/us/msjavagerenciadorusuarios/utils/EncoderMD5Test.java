@@ -19,8 +19,6 @@ import static org.mockito.Mockito.*;
 @RunWith(PowerMockRunner.class)
 public class EncoderMD5Test {
 
-    //MockedStatic<EncoderMD5> encoderMD5Mock = mockStatic(EncoderMD5.class);
-
     @Test
     @DisplayName("efetuaEncodeToMD5: Deve efetuar o encode to texto para MD5")
     public void efetuaEncodeToMD5() throws NoSuchAlgorithmException {
